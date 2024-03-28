@@ -12,7 +12,7 @@ const PortfolioPage = () => {
 	const fetchUserInfo = async () => {
 		try {
 			console.log(process.env.REACT_APP_BACKEND_URL);
-			const response = await axios.get("http://localhost:4000/user");
+			const response = await axios.get("/user");
 			const user = await response.data;
 			setUserInfo(user);
 			console.log(user);

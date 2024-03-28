@@ -35,9 +35,6 @@ const StockInfoList = ({ user, loading, setLoading, setUserInfo }) => {
 					setUserInfo={setUserInfo}
 				/>
 			))}
-			{/* {stockList.forEach((stock) => (
-				<StockInfoListItem stock={stock} money={balance} />
-			))} */}
 		</>
 	);
 };

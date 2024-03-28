@@ -7,10 +7,14 @@ import SearchBox from "../components/SearchBox";
 import TickerInfo from "../components/TickerInfo";
 import StockDetails from "../components/StockDetails";
 import { useParams } from "react-router-dom";
+import CustomAlert from "../components/CustomAlert";
 
 const HomePage = () => {
 	const { ticker: searchTicker } = useParams();
 	const [ticker, setTicker] = useState(searchTicker || "");
+	const [isAlertVisible, setIsAlertVisible] = useState(false);
+	const [alertContent, setAlertContent] = useState("");
+	const [alertVariant, setAlertVariant] = useState("info");
 
 	return (
 		<Container>
@@ -18,7 +22,15 @@ const HomePage = () => {
 			<SearchBox ticker={ticker} setTicker={setTicker} />
 			{ticker && (
 				<>
-					<StockDetails ticker={ticker} />
+					{isAlertVisible && (
+						<CustomAlert content={alertContent} variant={alertVariant} />
+					)}
+					<StockDetails
+						ticker={ticker}
+						setAlertContent={setAlertContent}
+						setAlertVariant={setAlertVariant}
+						setIsAlertVisible={setIsAlertVisible}
+					/>
 					<TickerInfo ticker={ticker} />
 				</>
 			)}

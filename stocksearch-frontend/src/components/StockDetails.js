@@ -2,8 +2,14 @@ import { useState, useEffect } from "react";
 import { Container, Row, Col, Button, Image } from "react-bootstrap";
 
 import axios from "axios";
+import BuyModal from "./BuyModal";
 
-const StockDetails = ({ ticker }) => {
+const StockDetails = ({
+	ticker,
+	setAlertContent,
+	setAlertVariant,
+	setIsAlertVisible,
+}) => {
 	const [companyDescription, setCompanyDescription] = useState({});
 	const [timestamp, setTimestamp] = useState(new Date());
 	const [stockQuote, setStockQuote] = useState({});
@@ -12,6 +18,8 @@ const StockDetails = ({ ticker }) => {
 	const [user, setUser] = useState(
 		JSON.parse(localStorage.getItem("userInfo"))
 	);
+	const [quantity, setQuantity] = useState(0);
+	const [isModalVisible, setIsModalVisible] = useState(false);
 
 	const fetchStockQuote = async () => {
 		const response = await axios.get(`/stock/quote/${ticker}`);
@@ -58,6 +66,20 @@ const StockDetails = ({ ticker }) => {
 		}
 	};
 
+	const handleBuy = async () => {
+		const response = await axios.post(`/buy`, {
+			ticker: ticker,
+			name: companyDescription.name,
+			quantity: quantity,
+			totalCost: (parseInt(quantity) * parseFloat(stockQuote.c)).toFixed(2),
+		});
+		await response.data;
+		setIsModalVisible(false);
+		setIsAlertVisible(true);
+		setAlertContent(ticker + " bought successfully");
+		setAlertVariant("info");
+	};
+
 	useEffect(() => {
 		setLoading(true);
 		fetchCompanyDescription();
@@ -72,6 +94,17 @@ const StockDetails = ({ ticker }) => {
 
 	return (
 		<Container className="my-4">
+			<BuyModal
+				show={isModalVisible}
+				handleClose={() => setIsModalVisible(false)}
+				quantity={quantity}
+				setQuantity={setQuantity}
+				ticker={ticker}
+				currentPrice={stockQuote.c}
+				balance={user?.money}
+				onClickHandler={handleBuy}
+				btnText={"Buy"}
+			/>
 			<Row>
 				<Col className="text-center" xl={4}>
 					<h2>
@@ -88,10 +121,9 @@ const StockDetails = ({ ticker }) => {
 					</h2>
 					<h3>{companyDescription.name}</h3>
 					<p>{companyDescription.exchange}</p>
-					<Button variant="primary" className="mr-2">
+					<Button variant="primary" onClick={() => setIsModalVisible(true)}>
 						Buy
 					</Button>
-					<Button variant="success">Sell</Button>
 				</Col>
 				<Col className="text-center" xl={4}>
 					<Image
