@@ -117,7 +117,7 @@ const RecommendationTrendsChart = ({ ticker }) => {
 	}
 
 	return (
-		<h1>
+		<>
 			{loading ? (
 				<h1>Loading</h1>
 			) : chartOptions ? (
@@ -131,7 +131,7 @@ const RecommendationTrendsChart = ({ ticker }) => {
 			) : (
 				<div>Failed to fetch data</div>
 			)}
-		</h1>
+		</>
 	);
 };
 

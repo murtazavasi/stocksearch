@@ -4,38 +4,43 @@ import HighchartsReact from "highcharts-react-official";
 import axios from "axios";
 
 const HistoricalSurprisesChart = ({ ticker }) => {
-	const [recommendationTrends, setRecommendationTrends] = useState([]);
-	const [categories, setCategories] = useState([]);
+	const [seriesData, setSeriesData] = useState([]);
 	const [loading, setLoading] = useState(false);
+	const [chartOptions, setChartOptions] = useState(null);
 
 	const fetchColumnChartData = async () => {
-		const response = await axios.get(`/stock/recommendation-trends/${ticker}`);
+		const response = await axios.get(`/stock/earnings/${ticker}`);
 		const data = await response.data;
 
-		let buy = [];
-		let sell = [];
-		let hold = [];
-		let strongBuy = [];
-		let strongSell = [];
+		let series1_data = [];
+		let series2_data = [];
 
-		for (let item in data) {
-			buy.push(item["buy"]);
-			sell.push(item["sell"]);
-			hold.push(item["hold"]);
-			strongBuy.push(item["strongBuy"]);
-			strongSell.push(item["strongSell"]);
-		}
+		data.map((item) => {
+			const date = new Date(item.period);
+			const timestamp = date.getTime();
 
-		const categoriesResult = data.map((item) => [item["period"]]);
-		const recommendationTrendsResult = [
-			{ data: buy },
-			{ data: sell },
-			{ data: hold },
-			{ data: strongBuy },
-			{ data: strongSell },
-		];
-		setRecommendationTrends(recommendationTrendsResult);
-		setCategories(categoriesResult);
+			series1_data.push([timestamp, item.estimate]);
+			series2_data.push([timestamp, item.surprisePercent]);
+		});
+
+		updateOptions([
+			{
+				name: "Series 1",
+				data: series1_data,
+				marker: {
+					enabled: true,
+					radius: 4,
+				},
+			},
+			{
+				name: "Series 2",
+				data: series2_data,
+				marker: {
+					enabled: true,
+					radius: 4,
+				},
+			},
+		]);
 	};
 
 	useEffect(() => {
@@ -48,28 +53,67 @@ const HistoricalSurprisesChart = ({ ticker }) => {
 		return <h1>Loading</h1>;
 	}
 
-	const options = {
-		xAxis: {
-			categories: categories,
-		},
-		plotOptions: {
-			column: {
-				stacking: "normal",
-				dataLabels: {
-					enabled: true,
+	const updateOptions = (seriesData) => {
+		const options = {
+			chart: {
+				type: "spline",
+			},
+			yAxis: {
+				opposite: false,
+			},
+			xAxis: {
+				type: "datetime",
+				labels: {
+					format: "{value:%Y-%m-%d}",
+				},
+				showLastLabel: true,
+			},
+			plotOptions: {
+				spline: {
+					marker: {
+						enable: false,
+					},
 				},
 			},
-		},
-		series: recommendationTrends,
+			series: seriesData,
+			title: {
+				text: "Historical EPS Surprises",
+			},
+			rangeSelector: {
+				enabled: false,
+			},
+			navigator: {
+				enabled: false,
+			},
+			scrollbar: {
+				enabled: false,
+			},
+			legend: {
+				enabled: true,
+			},
+		};
+
+		console.log(options);
+
+		setChartOptions(options);
 	};
+
 	return (
-		<HighchartsReact
-			highcharts={HighCharts}
-			constructorType={"stockChart"}
-			options={options}
-		>
-			RecommendationTrendsChart
-		</HighchartsReact>
+		<>
+			{loading ? (
+				<h1>Loading</h1>
+			) : chartOptions ? (
+				<HighchartsReact
+					highcharts={HighCharts}
+					constructorType={"stockChart"}
+					options={chartOptions}
+				>
+					RecommendationTrendsChart
+				</HighchartsReact>
+			) : (
+				<div>Failed to fetch data</div>
+			)}
+		</>
 	);
 };
 
