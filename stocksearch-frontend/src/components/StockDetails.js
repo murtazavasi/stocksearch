@@ -3,14 +3,15 @@ import { Container, Row, Col, Button, Image } from "react-bootstrap";
 
 import axios from "axios";
 
-const StockDetails = ({ userInfo, ticker }) => {
-	const { watchList } = userInfo;
-
+const StockDetails = ({ ticker }) => {
 	const [companyDescription, setCompanyDescription] = useState({});
 	const [timestamp, setTimestamp] = useState(new Date());
 	const [stockQuote, setStockQuote] = useState({});
 	const [loading, setLoading] = useState(false);
 	const [isMarketOpen, setIsMarketOpen] = useState(true);
+	const [user, setUser] = useState(
+		JSON.parse(localStorage.getItem("userInfo"))
+	);
 
 	const fetchStockQuote = async () => {
 		const response = await axios.get(`/stock/quote/${ticker}`);
@@ -30,10 +31,38 @@ const StockDetails = ({ userInfo, ticker }) => {
 		setCompanyDescription(data);
 	};
 
+	const fetchUserData = async () => {
+		const response = await axios.get(`/user/`);
+		const data = response.data;
+		setUser(data);
+	};
+
+	const toggleWatchList = async () => {
+		try {
+			let response;
+			if (user.watchList.includes(ticker)) {
+				response = await axios.delete(`/watchlist`, {
+					data: {
+						ticker: ticker,
+					},
+				});
+			} else if (!user.watchList.includes(ticker)) {
+				response = await axios.post(`/watchlist`, {
+					ticker: ticker,
+				});
+			}
+			const data = await response.data;
+			setUser(data);
+		} catch (error) {
+			console.log(`Error occurred while toggling watchlist item`);
+		}
+	};
+
 	useEffect(() => {
 		setLoading(true);
 		fetchCompanyDescription();
 		fetchStockQuote();
+		fetchUserData();
 		setLoading(false);
 	}, []);
 
@@ -47,11 +76,15 @@ const StockDetails = ({ userInfo, ticker }) => {
 				<Col className="text-center" xl={4}>
 					<h2>
 						{companyDescription.ticker}
-						{watchList.includes(companyDescription.ticker) ? (
-							<i className="bi bi-star-fill"></i>
-						) : (
-							<i className="bi bi-star"></i>
-						)}
+						<span onClick={toggleWatchList}>
+							{user &&
+							user.watchList &&
+							user.watchList.includes(companyDescription.ticker) ? (
+								<i className="bi bi-star-fill"></i>
+							) : (
+								<i className="bi bi-star"></i>
+							)}
+						</span>
 					</h2>
 					<h3>{companyDescription.name}</h3>
 					<p>{companyDescription.exchange}</p>

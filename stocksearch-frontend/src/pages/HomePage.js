@@ -11,18 +11,6 @@ import { useParams } from "react-router-dom";
 const HomePage = () => {
 	const { ticker: searchTicker } = useParams();
 	const [ticker, setTicker] = useState(searchTicker || "");
-	// const params = useParams();
-	// const [user, setUser] = useState(
-	// 	JSON.parse(localStorage.getItem("userInfo"))
-	// );
-
-	// const fetchUserData = async () => {
-	// 	const response = await axios.get(
-	// 		`/user/`
-	// 	);
-	// };
-
-	// useEffect(() => {}, []);
 
 	return (
 		<Container>
@@ -30,7 +18,7 @@ const HomePage = () => {
 			<SearchBox ticker={ticker} setTicker={setTicker} />
 			{ticker && (
 				<>
-					<StockDetails userInfo={{ watchList: [] }} ticker={ticker} />
+					<StockDetails ticker={ticker} />
 					<TickerInfo ticker={ticker} />
 				</>
 			)}
