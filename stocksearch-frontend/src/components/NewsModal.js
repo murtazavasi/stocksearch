@@ -8,7 +8,7 @@ const NewsModal = ({ show, handleClose, article }) => {
 
 	return (
 		<Modal show={show} onHide={handleClose} backdrop="static" keyboard={false}>
-			<Modal.Header closeButton>
+			<Modal.Header closeButton onHide={handleClose}>
 				<Modal.Title>{article.source}</Modal.Title>
 			</Modal.Header>
 			<Modal.Body>
