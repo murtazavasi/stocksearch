@@ -3,8 +3,18 @@ import { Modal, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 const NewsModal = ({ show, handleClose, article }) => {
-	const handleTweet = () => {};
-	const handlePost = () => {};
+	const handleTweet = () => {
+		const twitterIntentUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
+			article.headline
+		)}&url=${encodeURIComponent(article.url)}`;
+		window.open(twitterIntentUrl, "_blank");
+	};
+	const handlePost = () => {
+		const facebookShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+			article.url
+		)}`;
+		window.open(facebookShareUrl, "_blank");
+	};
 
 	return (
 		<Modal show={show} onHide={handleClose} backdrop="static" keyboard={false}>
