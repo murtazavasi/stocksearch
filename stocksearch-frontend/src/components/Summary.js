@@ -10,9 +10,7 @@ const Summary = ({ ticker }) => {
 	const [companyInfo, setCompanyInfo] = useState({});
 
 	const fetchData = async () => {
-		const response = await axios.get(
-			`${process.env.REACT_APP_BACKEND_URL}/stock/company/${ticker}`
-		);
+		const response = await axios.get(`/stock/company/${ticker}`);
 		const data = await response.data;
 		setCompanyInfo(data);
 	};

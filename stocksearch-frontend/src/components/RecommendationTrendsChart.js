@@ -11,9 +11,7 @@ const RecommendationTrendsChart = ({ ticker }) => {
 	const [loading, setLoading] = useState(false);
 
 	const fetchColumnChartData = async () => {
-		const response = await axios.get(
-			`${process.env.REACT_APP_BACKEND_URL}/stock/recommendation-trends/${ticker}`
-		);
+		const response = await axios.get(`/stock/recommendation-trends/${ticker}`);
 		const data = await response.data;
 
 		let buy = [];

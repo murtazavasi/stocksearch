@@ -10,9 +10,7 @@ const WatchListPage = () => {
 
 	const fetchWatchlist = async () => {
 		try {
-			const response = await axios.get(
-				`${process.env.REACT_APP_BACKEND_URL}/watchlist`
-			);
+			const response = await axios.get(`/watchlist`);
 			const data = await response.data;
 
 			setWatchlist(data["watchList"]);

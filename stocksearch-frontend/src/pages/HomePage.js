@@ -18,7 +18,7 @@ const HomePage = () => {
 
 	// const fetchUserData = async () => {
 	// 	const response = await axios.get(
-	// 		`${process.env.REACT_APP_BACKEND_URL}/user/`
+	// 		`/user/`
 	// 	);
 	// };
 

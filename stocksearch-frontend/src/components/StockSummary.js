@@ -7,9 +7,7 @@ const StockSummary = ({ ticker }) => {
 	const [loading, setLoading] = useState(false);
 
 	const fetchStockData = async () => {
-		const response = await axios.get(
-			`${process.env.REACT_APP_BACKEND_URL}/stock/quote/${ticker}`
-		);
+		const response = await axios.get(`/stock/quote/${ticker}`);
 		const data = await response.data;
 		setStockData(data);
 	};

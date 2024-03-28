@@ -9,9 +9,7 @@ const TopNews = ({ ticker }) => {
 	const [loading, setLoading] = useState(false);
 
 	const fetchTopNews = async () => {
-		const response = await axios.get(
-			`${process.env.REACT_APP_BACKEND_URL}/stock/news/${ticker}`
-		);
+		const response = await axios.get(`/stock/news/${ticker}`);
 		const data = await response.data;
 		setNews(data);
 	};

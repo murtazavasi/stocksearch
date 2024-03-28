@@ -13,9 +13,7 @@ const StockDetails = ({ userInfo, ticker }) => {
 	const [isMarketOpen, setIsMarketOpen] = useState(true);
 
 	const fetchStockQuote = async () => {
-		const response = await axios.get(
-			`${process.env.REACT_APP_BACKEND_URL}/stock/quote/${ticker}`
-		);
+		const response = await axios.get(`/stock/quote/${ticker}`);
 		const data = await response.data;
 		setStockQuote(data);
 		setTimestamp(new Date(data["t"] * 1000));
@@ -26,9 +24,7 @@ const StockDetails = ({ userInfo, ticker }) => {
 	};
 
 	const fetchCompanyDescription = async () => {
-		const response = await axios.get(
-			`${process.env.REACT_APP_BACKEND_URL}/stock/company/${ticker}`
-		);
+		const response = await axios.get(`/stock/company/${ticker}`);
 		const data = await response.data;
 
 		setCompanyDescription(data);

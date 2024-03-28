@@ -11,7 +11,7 @@ const WorkingDayChart = ({ ticker }) => {
 
 	const fetchChartData = async () => {
 		const response = await axios.get(
-			`${process.env.REACT_APP_BACKEND_URL}/stock/charts/hourly-validation/${ticker}`
+			`/stock/charts/hourly-validation/${ticker}`
 		);
 		const data = await response.data;
 		const temp = data.results.map((item) => [item["t"], item["c"]]);

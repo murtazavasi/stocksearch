@@ -10,7 +10,7 @@ const SearchBox = ({ ticker, setTicker }) => {
 
 	const handleChange = async (e) => {
 		// const response = await axios.get(
-		// 	`${process.env.REACT_APP_BACKEND_URL}/search/autocomplete/${currTickerValue}`
+		// 	`/search/autocomplete/${currTickerValue}`
 		// );
 		// const data = await response.data;
 		// let suggestions = data.result.map((item) => item["symbol"]);

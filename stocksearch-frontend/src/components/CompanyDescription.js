@@ -7,9 +7,7 @@ const CompanyDescription = ({ companyData, ticker }) => {
 	const [loading, setLoading] = useState(false);
 
 	const fetchPeerData = async () => {
-		const response = await axios.get(
-			`${process.env.REACT_APP_BACKEND_URL}/stock/peers/${ticker}`
-		);
+		const response = await axios.get(`/stock/peers/${ticker}`);
 		const data = await response.data;
 		setPeers(data);
 	};

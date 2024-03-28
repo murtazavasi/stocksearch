@@ -23,9 +23,7 @@ const StockInfoListItem = ({
 
 	const fetchStockInfo = async () => {
 		try {
-			const response = await axios.get(
-				`${process.env.REACT_APP_BACKEND_URL}/stock/quote/${stock.ticker}`
-			);
+			const response = await axios.get(`/stock/quote/${stock.ticker}`);
 			const data = await response.data;
 			setStockInfo(data);
 		} catch (error) {
@@ -34,24 +32,19 @@ const StockInfoListItem = ({
 	};
 
 	const fetchCompanyDescription = async () => {
-		const response = await axios.get(
-			`${process.env.REACT_APP_BACKEND_URL}/stock/company/${stock.ticker}`
-		);
+		const response = await axios.get(`/stock/company/${stock.ticker}`);
 		const data = await response.data;
 
 		setCompanyDescription(data);
 	};
 
 	const handleBuy = async () => {
-		const response = await axios.post(
-			`${process.env.REACT_APP_BACKEND_URL}/buy`,
-			{
-				ticker: stock.ticker,
-				name: companyDescription.name,
-				quantity: quantity,
-				totalCost: (parseInt(quantity) * parseFloat(stockInfo.c)).toFixed(2),
-			}
-		);
+		const response = await axios.post(`/buy`, {
+			ticker: stock.ticker,
+			name: companyDescription.name,
+			quantity: quantity,
+			totalCost: (parseInt(quantity) * parseFloat(stockInfo.c)).toFixed(2),
+		});
 		await response.data;
 		setIsBuyVisible(false);
 		setIsAlertVisible(true);
@@ -60,14 +53,11 @@ const StockInfoListItem = ({
 	};
 
 	const handleSell = async () => {
-		const response = await axios.post(
-			`${process.env.REACT_APP_BACKEND_URL}/sell`,
-			{
-				ticker: stock.ticker,
-				quantity: quantity,
-				cost: (parseInt(quantity) * parseFloat(stockInfo.c)).toFixed(2),
-			}
-		);
+		const response = await axios.post(`/sell`, {
+			ticker: stock.ticker,
+			quantity: quantity,
+			cost: (parseInt(quantity) * parseFloat(stockInfo.c)).toFixed(2),
+		});
 		await response.data;
 		setIsSellVisible(false);
 		setIsAlertVisible(true);

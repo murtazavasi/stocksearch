@@ -3,8 +3,9 @@ runtime: nodejs20
 instance_class: F2
 
 env_variables:
+  NODE_ENV: "production"
+  PORT: "5000"
   MONGO_URI: "mongodb+srv://murtaza:ES89uhbkRyx7YbsU@stocksearch.trku8c1.mongodb.net/StockSearch"
-  PORT: "4000"
   MONGODB_USERNAME: "murtazavasi2000"
   MONGODB_USER_PASSWORD: "ES89uhbkRyx7YbsU"
   FINNHUB_BASE_URL: "https://finnhub.io/api/v1"

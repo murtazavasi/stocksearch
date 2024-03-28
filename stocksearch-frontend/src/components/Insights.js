@@ -19,9 +19,7 @@ const Insights = ({ ticker }) => {
 
 	const fetchInsights = async () => {
 		try {
-			const response = await axios.get(
-				`${process.env.REACT_APP_BACKEND_URL}/stock/insider-sentiment/${ticker}`
-			);
+			const response = await axios.get(`/stock/insider-sentiment/${ticker}`);
 			const data = await response.data;
 			setInsights(data);
 

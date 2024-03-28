@@ -9,9 +9,7 @@ const WatchListItem = ({ ticker, loading, setLoading, setWatchlist }) => {
 
 	const fetchStockInfo = async () => {
 		try {
-			const response = await axios.get(
-				`${process.env.REACT_APP_BACKEND_URL}/stock/quote/${ticker}`
-			);
+			const response = await axios.get(`/stock/quote/${ticker}`);
 			const data = await response.data;
 			setStockInfo(data);
 			console.log("stock", data);
@@ -21,9 +19,7 @@ const WatchListItem = ({ ticker, loading, setLoading, setWatchlist }) => {
 	};
 
 	const fetchCompanyDescription = async () => {
-		const response = await axios.get(
-			`${process.env.REACT_APP_BACKEND_URL}/stock/company/${ticker}`
-		);
+		const response = await axios.get(`/stock/company/${ticker}`);
 		const data = await response.data;
 
 		setCompanyInfo(data);
@@ -33,14 +29,11 @@ const WatchListItem = ({ ticker, loading, setLoading, setWatchlist }) => {
 	const handleRemoveItem = async () => {
 		try {
 			console.log(ticker);
-			const response = await axios.delete(
-				`${process.env.REACT_APP_BACKEND_URL}/watchlist`,
-				{
-					data: {
-						ticker: ticker,
-					},
-				}
-			);
+			const response = await axios.delete(`/watchlist`, {
+				data: {
+					ticker: ticker,
+				},
+			});
 			const data = await response.data;
 			setWatchlist(data["watchList"]);
 		} catch (error) {
