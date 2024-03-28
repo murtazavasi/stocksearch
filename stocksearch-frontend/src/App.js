@@ -8,6 +8,7 @@ import Header from "./components/Header.js";
 import HomePage from "./pages/HomePage.js";
 import PortfolioPage from "./pages/PortfolioPage.js";
 import WatchListPage from "./pages/WatchListPage.js";
+import Footer from "./components/Footer.js";
 
 const App = () => {
 	return (
@@ -19,6 +20,7 @@ const App = () => {
 				<Route path="/portfolio" Component={PortfolioPage}></Route>
 				<Route path="/watchlist" Component={WatchListPage}></Route>
 			</Routes>
+			<Footer />
 		</Router>
 	);
 };
