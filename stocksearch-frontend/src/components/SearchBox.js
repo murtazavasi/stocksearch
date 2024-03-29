@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
+import Loader from "./utils/Loader";
 import classes from "./SearchBox.module.css";
 
 const SearchBox = ({
@@ -29,7 +30,6 @@ const SearchBox = ({
 				return;
 			}
 
-			console.log(e.target.value);
 			setIsLoading(true);
 
 			// Updating the current ticker value
@@ -68,14 +68,15 @@ const SearchBox = ({
 
 	const handleSearch = () => {
 		// console.log(string, results);
-		setTicker(currTickerValue);
+		setTicker(currTickerValue.toUpperCase());
 		setAutocompleteList([]);
 		navigate("/search/" + currTickerValue);
 	};
 
 	const handleSelect = (e) => {
 		console.log(e.target.textContent);
-		setTicker(e.target.textContent);
+		setTicker(e.target.textContent.toUpperCase());
+		// setCurrTickerValue(e.target.textContent.toUpperCase());
 		setAutocompleteList([]);
 		navigate("/search/" + e.target.textContent);
 	};
@@ -104,10 +105,11 @@ const SearchBox = ({
 				></i>
 			</div>
 
-			{autocompleteList && autocompleteList.length > 0 && (
-				<div className={classes.autocompleteContainer}>
-					{isLoading && <h1>Loading</h1>}
-					{autocompleteList.map((item) => (
+			<div className={classes.autocompleteContainer}>
+				{isLoading ? (
+					<Loader />
+				) : (
+					autocompleteList.map((item) => (
 						<p
 							key={item}
 							onClick={(e) => handleSelect(e)}
@@ -115,9 +117,9 @@ const SearchBox = ({
 						>
 							{item}
 						</p>
-					))}
-				</div>
-			)}
+					))
+				)}
+			</div>
 		</div>
 	);
 };

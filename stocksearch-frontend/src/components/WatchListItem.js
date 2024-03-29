@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Row, Col, Container } from "react-bootstrap";
 import axios from "axios";
+import Loader from "./utils/Loader";
 
 const WatchListItem = ({ ticker, loading, setLoading, setWatchlist }) => {
 	const [stockInfo, setStockInfo] = useState({});
@@ -46,10 +47,10 @@ const WatchListItem = ({ ticker, loading, setLoading, setWatchlist }) => {
 		fetchStockInfo();
 		fetchCompanyDescription();
 		setLoading(false);
-	}, [ticker]);
+	}, []);
 
 	if (loading) {
-		return <h1>Loading</h1>;
+		return <Loader />;
 	}
 
 	return (
@@ -57,7 +58,13 @@ const WatchListItem = ({ ticker, loading, setLoading, setWatchlist }) => {
 			{stockInfo && (
 				<>
 					<Row>
-						<i className="bi bi-x" onClick={handleRemoveItem}></i>
+						<div className="w-100">
+							<i
+								className="bi bi-x w-auto"
+								onClick={handleRemoveItem}
+								style={{ cursor: "pointer", outline: "1px" }}
+							></i>
+						</div>
 					</Row>
 					<Row>
 						<Col>

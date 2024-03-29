@@ -2,6 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Navbar, Nav } from "react-bootstrap";
 
+import classes from "./Header.module.css";
+
 const Header = () => {
 	return (
 		<Navbar
@@ -15,24 +17,30 @@ const Header = () => {
 					Stock Search
 				</Link>
 			</Navbar.Brand>
-			<Navbar.Toggle aria-controls="responsive-navbar-nav" />
+			<Navbar.Toggle
+				aria-controls="responsive-navbar-nav"
+				className="hamburgerIcon"
+			/>
 			<Navbar.Collapse
 				id="responsive-navbar-nav"
 				className="flex-grow-0 text-decoration-none"
 			>
-				<Nav>
-					<Link to="/" className="text-decoration-none text-light mx-2">
+				<Nav className="py-2">
+					<Link
+						to="/"
+						className="text-decoration-none text-light py-2 rounded px-3"
+					>
 						Search
 					</Link>
 					<Link
 						to="/watchlist"
-						className="text-decoration-none text-light mx-2"
+						className="text-decoration-none text-light py-2 rounded px-3"
 					>
 						WatchList
 					</Link>
 					<Link
 						to="/portfolio"
-						className="text-decoration-none text-light mx-2"
+						className="text-decoration-none text-light py-2 rounded px-3"
 					>
 						Portfolio
 					</Link>

@@ -3,6 +3,7 @@ import { Container, Row, Col, Button, Image } from "react-bootstrap";
 
 import axios from "axios";
 import BuyModal from "./BuyModal";
+import Loader from "./utils/Loader";
 
 const StockDetails = ({
 	ticker,
@@ -19,7 +20,8 @@ const StockDetails = ({
 		JSON.parse(localStorage.getItem("userInfo"))
 	);
 	const [quantity, setQuantity] = useState(0);
-	const [isModalVisible, setIsModalVisible] = useState(false);
+	const [isBuyVisible, setIsBuyVisible] = useState(false);
+	const [isSellVisible, setIsSellVisible] = useState(false);
 
 	const fetchStockQuote = async () => {
 		const response = await axios.get(`/stock/quote/${ticker}`);
@@ -70,14 +72,39 @@ const StockDetails = ({
 		const response = await axios.post(`/buy`, {
 			ticker: ticker,
 			name: companyDescription.name,
-			quantity: quantity,
+			quantity: parseInt(quantity),
 			totalCost: (parseInt(quantity) * parseFloat(stockQuote.c)).toFixed(2),
 		});
-		await response.data;
-		setIsModalVisible(false);
+		const updatedUser = await response.data;
+		setQuantity(0);
+
+		// Updating the alert to show relevant info
+		setIsBuyVisible(false);
 		setIsAlertVisible(true);
 		setAlertContent(ticker + " bought successfully");
 		setAlertVariant("info");
+
+		// Update the user and stockList to update the quantity
+		setUser(updatedUser);
+	};
+
+	const handleSell = async () => {
+		const response = await axios.post(`/sell`, {
+			ticker: ticker,
+			quantity: parseInt(quantity),
+			cost: (parseInt(quantity) * parseFloat(stockQuote.c)).toFixed(2),
+		});
+		const updatedUser = await response.data;
+		setQuantity(0);
+
+		// Updating the alert to show relevant info
+		setIsSellVisible(false);
+		setIsAlertVisible(true);
+		setAlertContent(ticker + " sold successfully");
+		setAlertVariant("danger");
+
+		// Update the user and stockList to update the quantity
+		setUser(updatedUser);
 	};
 
 	useEffect(() => {
@@ -95,8 +122,8 @@ const StockDetails = ({
 	return (
 		<Container className="my-4">
 			<BuyModal
-				show={isModalVisible}
-				handleClose={() => setIsModalVisible(false)}
+				show={isBuyVisible}
+				handleClose={() => setIsBuyVisible(false)}
 				quantity={quantity}
 				setQuantity={setQuantity}
 				ticker={ticker}
@@ -105,53 +132,97 @@ const StockDetails = ({
 				onClickHandler={handleBuy}
 				btnText={"Buy"}
 			/>
-			<Row>
-				<Col className="text-center" xl={4}>
-					<h2>
-						{companyDescription.ticker}
-						<span onClick={toggleWatchList}>
-							{user &&
-							user.watchList &&
-							user.watchList.includes(companyDescription.ticker) ? (
-								<i className="bi bi-star-fill"></i>
-							) : (
-								<i className="bi bi-star"></i>
+			<BuyModal
+				show={isSellVisible}
+				handleClose={() => setIsSellVisible(false)}
+				quantity={quantity}
+				setQuantity={setQuantity}
+				ticker={ticker}
+				currentPrice={stockQuote.c}
+				balance={user?.money}
+				onClickHandler={handleSell}
+				btnText={"Sell"}
+			/>
+			{loading ? (
+				<Loader />
+			) : (
+				<>
+					<Row className="gy-4">
+						<Col className="text-center" xl={4}>
+							<h2 className="fs-1">
+								{companyDescription.ticker}
+								<span onClick={toggleWatchList} className="fs-3 mx-2">
+									{user &&
+									user.watchList &&
+									user.watchList.includes(companyDescription.ticker) ? (
+										<i className="bi bi-star-fill"></i>
+									) : (
+										<i className="bi bi-star"></i>
+									)}
+								</span>
+							</h2>
+							<h3 className="fs-4 text-body-secondary">
+								{companyDescription.name}
+							</h3>
+							<p className="fs-6">{companyDescription.exchange}</p>
+							<Button variant="success" onClick={() => setIsBuyVisible(true)}>
+								Buy
+							</Button>
+							{user?.stocksBought
+								?.map((item) => item.ticker)
+								.includes(ticker) && (
+								<Button
+									className="ms-2"
+									variant="danger"
+									onClick={() => setIsSellVisible(true)}
+								>
+									Sell
+								</Button>
 							)}
-						</span>
-					</h2>
-					<h3>{companyDescription.name}</h3>
-					<p>{companyDescription.exchange}</p>
-					<Button variant="primary" onClick={() => setIsModalVisible(true)}>
-						Buy
-					</Button>
-				</Col>
-				<Col className="text-center" xl={4}>
-					<Image
-						fluid
-						className="w-25 object-fit-contain"
-						src={companyDescription.logo}
-					/>
-				</Col>
-				<Col className="text-center" xl={4}>
-					<h2>{stockQuote.c}</h2>
-					<h4>
-						{stockQuote.dp > 0 ? (
-							<i className="bi bi-caret-up-fill"></i>
+						</Col>
+						<Col className="text-center" xl={4}>
+							<Image
+								fluid
+								className="w-25 object-fit-contain"
+								src={companyDescription.logo}
+							/>
+						</Col>
+						<Col className="text-center" xl={4}>
+							{stockQuote.dp > 0 ? (
+								<>
+									<h2 className="text-success fs-1">{stockQuote.c}</h2>
+									<h4 className="text-success fs-4">
+										<i className="bi bi-caret-up-fill"></i>
+										{stockQuote.d} ({stockQuote?.dp?.toFixed(2)} %)
+									</h4>
+								</>
+							) : (
+								<>
+									<h2 className="text-danger fs-1">{stockQuote.c}</h2>
+									<h4 className="text-danger fs-4">
+										<i className="bi bi-caret-down-fill"></i>
+										{stockQuote.d} ({stockQuote?.dp?.toFixed(2)} %)
+									</h4>
+								</>
+							)}
+							<p className="fs-6 text-body-secondary">
+								{timestamp.toISOString()}
+							</p>
+						</Col>
+					</Row>
+					<Row>
+						{isMarketOpen ? (
+							<p className="text-center text-success fw-medium">
+								Market is Open
+							</p>
 						) : (
-							<i className="bi bi-caret-down-fill"></i>
+							<p className="text-center text-danger fw-medium">
+								Market closed{" "}
+							</p>
 						)}
-						{stockQuote.d} ({stockQuote.dp})
-					</h4>
-					<p>{timestamp.toISOString()}</p>
-				</Col>
-			</Row>
-			<Row>
-				{isMarketOpen ? (
-					<p className="text-center">Market is Open</p>
-				) : (
-					<p className="text-center">Market closed </p>
-				)}
-			</Row>
+					</Row>
+				</>
+			)}
 		</Container>
 	);
 };

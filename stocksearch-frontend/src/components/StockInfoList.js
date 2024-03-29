@@ -12,31 +12,34 @@ const StockInfoList = ({ user, loading, setLoading, setUserInfo }) => {
 	const [alertVariant, setAlertVariant] = useState("info");
 	const [stockList, setStockList] = useState(user.stocksBought || []);
 
-	if (loading) {
-		return <h1>Loading</h1>;
-	}
+	// if (loading) {
+	// 	return <h1>Loading</h1>;
+	// }
+	console.log(stockList);
 
 	return (
 		<>
 			{isAlertVisible && (
 				<CustomAlert content={alertContent} variant={alertVariant} />
 			)}
-			<h2>My Portfolio</h2>
-			<h4>Money in Wallet: ${money?.toFixed(2)}</h4>
-			{stockList.map((stock, idx) => (
-				<StockInfoListItem
-					key={idx}
-					stock={stock}
-					money={money}
-					loading={loading}
-					setLoading={setLoading}
-					setIsAlertVisible={setIsAlertVisible}
-					setAlertContent={setAlertContent}
-					setAlertVariant={setAlertVariant}
-					setUserInfo={setUserInfo}
-					setStockList={setStockList}
-				/>
-			))}
+			{!loading && <h4>Money in Wallet: ${money?.toFixed(2)}</h4>}
+			{!loading &&
+				stockList &&
+				stockList.length > 0 &&
+				stockList.map((stock, idx) => (
+					<StockInfoListItem
+						key={idx}
+						stock={stock}
+						money={money}
+						loading={loading}
+						setLoading={setLoading}
+						setIsAlertVisible={setIsAlertVisible}
+						setAlertContent={setAlertContent}
+						setAlertVariant={setAlertVariant}
+						setUserInfo={setUserInfo}
+						setStockList={setStockList}
+					/>
+				))}
 		</>
 	);
 };

@@ -1,0 +1,19 @@
+.hamburgerIcon {
+	color: white;
+	border: none;
+	outline: none;
+	background-color: white;
+}
+
+.hamburgerIcon:focus {
+	outline: none;
+	border: none;
+}
+
+.hamburgerIcon::before,
+.hamburgerIcon::after {
+	color: white;
+	background-color: white;
+	border: none;
+	outline: none;
+}

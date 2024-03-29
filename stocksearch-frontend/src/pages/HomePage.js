@@ -1,12 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { useParams } from "react-router-dom";
 import { Container } from "react-bootstrap";
-
-import axios from "axios";
 
 import SearchBox from "../components/SearchBox";
 import TickerInfo from "../components/TickerInfo";
 import StockDetails from "../components/StockDetails";
-import { useParams } from "react-router-dom";
 import CustomAlert from "../components/CustomAlert";
 
 const HomePage = () => {

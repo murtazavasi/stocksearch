@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { Container } from "react-bootstrap";
-
 import axios from "axios";
 
 import StockInfoList from "../components/StockInfoList";
+import Loader from "../components/utils/Loader";
 
 const PortfolioPage = () => {
 	const [userInfo, setUserInfo] = useState({});
@@ -28,12 +28,11 @@ const PortfolioPage = () => {
 		fetchUserInfo();
 	}, []);
 
-	if (loading) {
-		return <h1>Loading</h1>;
-	}
 	return (
 		<Container className="mt-4">
-			{Object.keys("stocksBought") && (
+			<h2>My Portfolio</h2>
+			{loading && <Loader />}
+			{userInfo.stocksBought && (
 				<StockInfoList
 					user={userInfo}
 					loading={loading}

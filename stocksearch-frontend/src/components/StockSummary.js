@@ -24,16 +24,16 @@ const StockSummary = ({ ticker }) => {
 
 	return (
 		<Container fluid className="text-center my-4">
-			<p>
+			<p className="mb-0">
 				<b>High Price:</b> {stockData.h}
 			</p>
-			<p>
+			<p className="mb-0">
 				<b>Low Price:</b> {stockData.l}
 			</p>
-			<p>
+			<p className="mb-0">
 				<b>Open Price: </b> {stockData.o}
 			</p>
-			<p>
+			<p className="mb-0">
 				<b>Prev Close:</b> {stockData.pc}
 			</p>
 		</Container>

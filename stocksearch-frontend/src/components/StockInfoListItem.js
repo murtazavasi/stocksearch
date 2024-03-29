@@ -148,17 +148,17 @@ const StockInfoListItem = ({
 				</Row>
 				<Row>
 					<Col>Total Cost:</Col>
-					<Col>{stock.totalCost}</Col>
+					<Col>{stock?.totalCost?.toFixed(2)}</Col>
 					<Col>Market Value:</Col>
 					<Col className={change > 0 ? "text-success" : "text-danger"}>
-						{marketValue}
+						{marketValue?.toFixed(2)}
 					</Col>
 				</Row>
 			</Card.Body>
 			<Card.Footer className="text-muted">
 				<Button
 					variant="primary"
-					className="mr-2"
+					className="me-2"
 					onClick={() => setIsBuyVisible(true)}
 				>
 					Buy
