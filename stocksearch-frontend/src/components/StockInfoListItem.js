@@ -13,6 +13,8 @@ const StockInfoListItem = ({
 	setIsAlertVisible,
 	setAlertContent,
 	setAlertVariant,
+	setUserInfo,
+	setStockList,
 }) => {
 	const [quantity, setQuantity] = useState(0);
 	const [stockInfo, setStockInfo] = useState({});
@@ -42,27 +44,40 @@ const StockInfoListItem = ({
 		const response = await axios.post(`/buy`, {
 			ticker: stock.ticker,
 			name: companyDescription.name,
-			quantity: quantity,
+			quantity: parseInt(quantity),
 			totalCost: (parseInt(quantity) * parseFloat(stockInfo.c)).toFixed(2),
 		});
-		await response.data;
+		const updatedUser = await response.data;
+		console.log(quantity, typeof quantity);
+		setQuantity(0);
+
+		// Updating the alert to show relevant info
 		setIsBuyVisible(false);
 		setIsAlertVisible(true);
 		setAlertContent(stock.ticker + " bought successfully");
 		setAlertVariant("info");
+
+		// Update the user and stockList to update the quantity
+		setStockList(updatedUser.stocksBought);
 	};
 
 	const handleSell = async () => {
 		const response = await axios.post(`/sell`, {
 			ticker: stock.ticker,
-			quantity: quantity,
+			quantity: parseInt(quantity),
 			cost: (parseInt(quantity) * parseFloat(stockInfo.c)).toFixed(2),
 		});
-		await response.data;
+		const updatedUser = await response.data;
+		setQuantity(0);
+
+		// Updating the alert to show relevant info
 		setIsSellVisible(false);
 		setIsAlertVisible(true);
 		setAlertContent(stock.ticker + " sold successfully");
 		setAlertVariant("danger");
+
+		// Update the user and stockList to update the quantity
+		setStockList(updatedUser.stocksBought);
 	};
 
 	useEffect(() => {

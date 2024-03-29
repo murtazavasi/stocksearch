@@ -26,10 +26,6 @@ const PortfolioPage = () => {
 	useEffect(() => {
 		setLoading(true);
 		fetchUserInfo();
-		// const temp = async () => {
-		// 	await fetchUserInfo();
-		// };
-		// temp();
 	}, []);
 
 	if (loading) {

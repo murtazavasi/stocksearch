@@ -6,12 +6,14 @@ const Footer = () => {
 		<footer
 			style={{
 				backgroundColor: "#dddddd",
-				position: "sticky",
+				position: "fixed",
+				padding: "10px 0",
 				bottom: 0,
-				left: 0,
+				width: "100%",
+				textAlign: "center",
 			}}
 		>
-			<p className="text-center fw-medium py-1" style={{ margin: 0 }}>
+			<p className="fw-medium" style={{ margin: 0 }}>
 				Powered by{" "}
 				<Link to="https://finnhub.io" target="_blank" rel="noopener noreferrer">
 					Finnhub.io

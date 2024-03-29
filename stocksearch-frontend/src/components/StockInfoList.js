@@ -23,8 +23,9 @@ const StockInfoList = ({ user, loading, setLoading, setUserInfo }) => {
 			)}
 			<h2>My Portfolio</h2>
 			<h4>Money in Wallet: ${money?.toFixed(2)}</h4>
-			{stockList.map((stock) => (
+			{stockList.map((stock, idx) => (
 				<StockInfoListItem
+					key={idx}
 					stock={stock}
 					money={money}
 					loading={loading}
@@ -33,6 +34,7 @@ const StockInfoList = ({ user, loading, setLoading, setUserInfo }) => {
 					setAlertContent={setAlertContent}
 					setAlertVariant={setAlertVariant}
 					setUserInfo={setUserInfo}
+					setStockList={setStockList}
 				/>
 			))}
 		</>

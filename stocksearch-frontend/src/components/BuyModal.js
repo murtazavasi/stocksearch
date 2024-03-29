@@ -1,7 +1,4 @@
-import { Modal, Button, Container, Form } from "react-bootstrap";
-
-import axios from "axios";
-import { useState } from "react";
+import { Modal, Button, Form } from "react-bootstrap";
 
 const BuyModal = ({
 	show,
@@ -27,7 +24,7 @@ const BuyModal = ({
 					type="number"
 					id="quantity"
 					value={quantity}
-					onChange={(e) => setQuantity(e.target.value)}
+					onChange={(e) => setQuantity(parseInt(e.target.value))}
 				/>
 			</Modal.Body>
 			<Modal.Footer>

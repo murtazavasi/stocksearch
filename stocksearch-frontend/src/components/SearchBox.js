@@ -25,6 +25,7 @@ const SearchBox = ({
 				setAutocompleteList([]);
 				setTicker("");
 				setCurrTickerValue("");
+				setIsAlertVisible(false);
 				return;
 			}
 
@@ -39,7 +40,10 @@ const SearchBox = ({
 			const data = await response.data;
 			console.log(data);
 			let suggestions = data.result
-				.filter((item) => item["type"] === "Common Stock")
+				.filter(
+					(item) =>
+						item["type"] === "Common Stock" && !item["symbol"].includes(".")
+				)
 				.map((item) => item["symbol"]);
 
 			console.log(suggestions);

@@ -130,6 +130,7 @@ const subtractMoney = async (req, res) => {
 const buyStock = async (req, res) => {
 	let { ticker, name, quantity, totalCost: cost } = req.body;
 	cost = parseFloat(cost);
+	quantity = parseInt(quantity);
 
 	const user = await User.findOne({
 		name: "default",
@@ -187,6 +188,8 @@ const buyStock = async (req, res) => {
 const sellStock = async (req, res) => {
 	let { ticker, quantity, cost } = req.body;
 	cost = parseFloat(cost);
+	quantity = parseInt(quantity);
+	console.log(typeof quantity);
 
 	const user = await User.findOne({
 		name: "default",
