@@ -217,7 +217,7 @@ const StockDetails = ({
 							</p>
 						) : (
 							<p className="text-center text-danger fw-medium">
-								Market closed{" "}
+								Market closed on ${timestamp.toISOString()}
 							</p>
 						)}
 					</Row>

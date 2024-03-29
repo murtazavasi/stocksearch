@@ -26,7 +26,7 @@ const TopNews = ({ ticker }) => {
 
 	return (
 		<Container>
-			<Row className="mb-4">
+			<Row className="g-4">
 				{news.map((item, idx) => {
 					return (
 						<Col xl={6}>
