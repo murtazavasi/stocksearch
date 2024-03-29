@@ -8,7 +8,7 @@ const Header = () => {
 			collapseOnSelect
 			expand="lg"
 			className="px-4"
-			style={{ backgroundColor: "#2223a9 !important" }}
+			style={{ backgroundColor: "#2223a9" }}
 		>
 			<Navbar.Brand className="flex-grow-1">
 				<Link to="/" className="text-decoration-none text-light">
@@ -21,21 +21,21 @@ const Header = () => {
 				className="flex-grow-0 text-decoration-none"
 			>
 				<Nav>
-					<Nav.Link>
-						<Link to="/" className="text-decoration-none text-light">
-							Search
-						</Link>
-					</Nav.Link>
-					<Nav.Link>
-						<Link to="/watchlist" className="text-decoration-none text-light">
-							WatchList
-						</Link>
-					</Nav.Link>
-					<Nav.Link>
-						<Link to="/portfolio" className="text-decoration-none text-light">
-							Portfolio
-						</Link>
-					</Nav.Link>
+					<Link to="/" className="text-decoration-none text-light mx-2">
+						Search
+					</Link>
+					<Link
+						to="/watchlist"
+						className="text-decoration-none text-light mx-2"
+					>
+						WatchList
+					</Link>
+					<Link
+						to="/portfolio"
+						className="text-decoration-none text-light mx-2"
+					>
+						Portfolio
+					</Link>
 				</Nav>
 			</Navbar.Collapse>
 		</Navbar>

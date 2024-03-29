@@ -1,15 +1,21 @@
 import React, { useState } from "react";
 import axios from "axios";
-
 import { useNavigate } from "react-router-dom";
 
 import classes from "./SearchBox.module.css";
 
-const SearchBox = ({ ticker, setTicker }) => {
+const SearchBox = ({
+	ticker,
+	setTicker,
+	setAlertContent,
+	setIsAlertVisible,
+	setAlertVariant,
+}) => {
 	let navigate = useNavigate();
 
 	const [currTickerValue, setCurrTickerValue] = useState("");
 	const [autocompleteList, setAutocompleteList] = useState([]);
+
 	const [isLoading, setIsLoading] = useState(false);
 
 	const handleChange = async (e) => {
@@ -32,8 +38,22 @@ const SearchBox = ({ ticker, setTicker }) => {
 			);
 			const data = await response.data;
 			console.log(data);
-			let suggestions = data.result.map((item) => item["symbol"]);
+			let suggestions = data.result
+				.filter((item) => item["type"] === "Common Stock")
+				.map((item) => item["symbol"]);
+
 			console.log(suggestions);
+
+			if (suggestions.length === 0) {
+				setIsAlertVisible(true);
+				setAlertContent("No data found. Please enter a valid ticker");
+				setAlertVariant("danger");
+				console.log("first");
+			} else {
+				console.log("second");
+				setIsAlertVisible(false);
+			}
+
 			setAutocompleteList(suggestions);
 			setIsLoading(false);
 		} catch (error) {
@@ -75,13 +95,14 @@ const SearchBox = ({ ticker, setTicker }) => {
 						setCurrTickerValue("");
 						setAutocompleteList([]);
 						setTicker("");
+						navigate("/");
 					}}
 				></i>
 			</div>
-			{isLoading && <h1>Loading</h1>}
 
 			{autocompleteList && autocompleteList.length > 0 && (
 				<div className={classes.autocompleteContainer}>
+					{isLoading && <h1>Loading</h1>}
 					{autocompleteList.map((item) => (
 						<p
 							key={item}

@@ -10,6 +10,8 @@ import { userRouter } from "./routes/users.js";
 import { tickerRouter } from "./routes/ticker.js";
 import { stockRouter } from "./routes/stock.js";
 
+import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
+
 dotenv.config();
 
 const app = express();
@@ -39,6 +41,9 @@ if (process.env.NODE_ENV === "production") {
 		res.sendFile(join(__dirname, "./../stocksearch-frontend/build/index.html"));
 	});
 }
+
+app.use(notFound);
+app.use(errorHandler);
 
 const port = process.env.PORT;
 app.listen(port, () => {

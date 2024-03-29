@@ -19,12 +19,18 @@ const HomePage = () => {
 	return (
 		<Container>
 			<h2 className="mt-4 text-center">STOCK SEARCH</h2>
-			<SearchBox ticker={ticker} setTicker={setTicker} />
+			<SearchBox
+				ticker={ticker}
+				setTicker={setTicker}
+				setAlertContent={setAlertContent}
+				setAlertVariant={setAlertVariant}
+				setIsAlertVisible={setIsAlertVisible}
+			/>
+			{isAlertVisible && (
+				<CustomAlert content={alertContent} variant={alertVariant} />
+			)}
 			{ticker && (
 				<>
-					{isAlertVisible && (
-						<CustomAlert content={alertContent} variant={alertVariant} />
-					)}
 					<StockDetails
 						ticker={ticker}
 						setAlertContent={setAlertContent}
