@@ -29,8 +29,8 @@ const TopNews = ({ ticker }) => {
 			<Row className="g-4">
 				{news.map((item, idx) => {
 					return (
-						<Col xl={6}>
-							<NewsArticle article={item} key={idx} />
+						<Col xl={6} key={idx}>
+							<NewsArticle article={item} />
 						</Col>
 					);
 				})}

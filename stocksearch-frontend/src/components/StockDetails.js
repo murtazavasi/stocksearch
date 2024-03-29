@@ -24,27 +24,39 @@ const StockDetails = ({
 	const [isSellVisible, setIsSellVisible] = useState(false);
 
 	const fetchStockQuote = async () => {
-		const response = await axios.get(`/stock/quote/${ticker}`);
-		const data = await response.data;
-		setStockQuote(data);
-		setTimestamp(new Date(data["t"] * 1000));
+		try {
+			const response = await axios.get(`/stock/quote/${ticker}`);
+			const data = await response.data;
+			setStockQuote(data);
+			setTimestamp(new Date(data["t"] * 1000));
 
-		let difference = Math.abs(new Date() - data["t"] * 1000);
-		let minutes = Math.floor(difference / 1000 / 60);
-		setIsMarketOpen(minutes < 5);
+			let difference = Math.abs(new Date() - data["t"] * 1000);
+			let minutes = Math.floor(difference / 1000 / 60);
+			setIsMarketOpen(minutes < 5);
+		} catch (error) {
+			console.log(error);
+		}
 	};
 
 	const fetchCompanyDescription = async () => {
-		const response = await axios.get(`/stock/company/${ticker}`);
-		const data = await response.data;
+		try {
+			const response = await axios.get(`/stock/company/${ticker}`);
+			const data = await response.data;
 
-		setCompanyDescription(data);
+			setCompanyDescription(data);
+		} catch (error) {
+			console.log(error);
+		}
 	};
 
 	const fetchUserData = async () => {
-		const response = await axios.get(`/user/`);
-		const data = response.data;
-		setUser(data);
+		try {
+			const response = await axios.get(`/user/`);
+			const data = response.data;
+			setUser(data);
+		} catch (error) {
+			console.log(error);
+		}
 	};
 
 	const toggleWatchList = async () => {
@@ -217,7 +229,7 @@ const StockDetails = ({
 							</p>
 						) : (
 							<p className="text-center text-danger fw-medium">
-								Market closed on ${timestamp.toISOString()}
+								Market closed on {timestamp.toISOString()}
 							</p>
 						)}
 					</Row>

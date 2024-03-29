@@ -44,7 +44,12 @@ const SearchBox = ({
 					(item) =>
 						item["type"] === "Common Stock" && !item["symbol"].includes(".")
 				)
-				.map((item) => item["symbol"]);
+				.map((item) => {
+					return {
+						symbol: item["symbol"],
+						description: item["description"],
+					};
+				});
 
 			console.log(suggestions);
 
@@ -73,12 +78,13 @@ const SearchBox = ({
 		navigate("/search/" + currTickerValue);
 	};
 
-	const handleSelect = (e) => {
-		console.log(e.target.textContent);
-		setTicker(e.target.textContent.toUpperCase());
+	const handleSelect = (value) => {
+		console.log(value);
+		// console.log(e.target.textContent);
+		setTicker(value.toUpperCase());
 		// setCurrTickerValue(e.target.textContent.toUpperCase());
 		setAutocompleteList([]);
-		navigate("/search/" + e.target.textContent);
+		navigate("/search/" + value.toUpperCase());
 	};
 
 	return (
@@ -111,11 +117,11 @@ const SearchBox = ({
 				) : (
 					autocompleteList.map((item) => (
 						<p
-							key={item}
-							onClick={(e) => handleSelect(e)}
+							key={item["symbol"]}
+							onClick={() => handleSelect(item["symbol"])}
 							className={classes.autocompleteItem}
 						>
-							{item}
+							{`${item["symbol"]} | ${item["description"]}`}
 						</p>
 					))
 				)}
