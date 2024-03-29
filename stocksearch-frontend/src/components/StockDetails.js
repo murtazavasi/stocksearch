@@ -128,7 +128,7 @@ const StockDetails = ({
 				<Col className="text-center" xl={4}>
 					<Image
 						fluid
-						className="w-50 object-fit-contain"
+						className="w-25 object-fit-contain"
 						src={companyDescription.logo}
 					/>
 				</Col>

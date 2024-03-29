@@ -50,8 +50,6 @@ const Chart = ({ ticker }) => {
 			item["c"],
 		]);
 
-		console.log(volume);
-		console.log(ohlc);
 		const options = {
 			title: {
 				text: "AAPL Historical",
@@ -69,6 +67,7 @@ const Chart = ({ ticker }) => {
 					},
 				},
 			],
+
 			yAxis: [
 				{
 					startOnTick: false,
@@ -85,8 +84,10 @@ const Chart = ({ ticker }) => {
 					resize: {
 						enabled: true,
 					},
+					opposite: true,
 				},
 				{
+					opposite: true,
 					labels: {
 						align: "right",
 						x: -3,
@@ -100,6 +101,48 @@ const Chart = ({ ticker }) => {
 					lineWidth: 2,
 				},
 			],
+
+			navigator: {
+				enabled: true,
+			},
+			scrollbar: {
+				enabled: true,
+			},
+			rangeSelector: {
+				enabled: true,
+				buttons: [
+					{
+						type: "month",
+						count: 1,
+						text: "1m",
+					},
+					{
+						type: "month",
+						count: 3,
+						text: "3m",
+					},
+					{
+						type: "month",
+						count: 6,
+						text: "6m",
+					},
+					{
+						type: "ytd",
+						text: "YTD",
+					},
+					{
+						type: "year",
+						count: 1,
+						text: "1y",
+					},
+					{
+						type: "all",
+						text: "All",
+					},
+				],
+				selected: 2, // default selected range
+				inputEnabled: true, // hide input box
+			},
 
 			tooltip: {
 				split: true,
@@ -144,13 +187,16 @@ const Chart = ({ ticker }) => {
 					},
 				},
 			],
+			chart: {
+				height: 600, // Adjust the height of the chart here
+			},
 		};
 		console.log("chartOptions", options);
 		setChartOptions(options); // Set updated options state
 	};
 
 	return (
-		<div>
+		<div style={{ height: "600px" }}>
 			{isLoading ? (
 				<div>Loading...</div>
 			) : chartOptions ? ( // Check if chartOptions is not null
@@ -161,5 +207,5 @@ const Chart = ({ ticker }) => {
 		</div>
 	);
 };
-window.Highcharts = Highcharts;
+
 export default Chart;

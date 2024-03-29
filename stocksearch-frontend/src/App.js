@@ -12,16 +12,18 @@ import Footer from "./components/Footer.js";
 
 const App = () => {
 	return (
-		<Router>
-			<Header />
-			<Routes>
-				<Route path="/" Component={HomePage}></Route>
-				<Route path="/search/:keyword" Component={HomePage}></Route>
-				<Route path="/portfolio" Component={PortfolioPage}></Route>
-				<Route path="/watchlist" Component={WatchListPage}></Route>
-			</Routes>
-			<Footer />
-		</Router>
+		<div className="App">
+			<Router>
+				<Header />
+				<Routes>
+					<Route path="/" Component={HomePage}></Route>
+					<Route path="/search/:keyword" Component={HomePage}></Route>
+					<Route path="/portfolio" Component={PortfolioPage}></Route>
+					<Route path="/watchlist" Component={WatchListPage}></Route>
+				</Routes>
+				<Footer />
+			</Router>
+		</div>
 	);
 };
 
