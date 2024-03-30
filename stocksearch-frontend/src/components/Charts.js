@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 
 import Highcharts from "highcharts/highstock";
 import HighchartsReact from "highcharts-react-official";
@@ -10,28 +9,13 @@ import VBP from "highcharts/indicators/volume-by-price";
 Indicators(Highcharts);
 VBP(Highcharts);
 
-const Chart = ({ ticker }) => {
-	const [isLoading, setIsLoading] = useState(true);
-	const [chartData, setChartData] = useState(null);
+const Chart = ({ ticker, chartData }) => {
 	const [chartOptions, setChartOptions] = useState(null);
 
 	useEffect(() => {
 		// fetchData();
+		updateOptions(chartData);
 	}, [ticker]);
-
-	const fetchData = async () => {
-		try {
-			const response = await axios.get(`/stock/charts/${ticker}`);
-			const data = await response.data;
-
-			setChartData(data);
-			updateOptions(data);
-			setIsLoading(false);
-		} catch (error) {
-			console.error("Error fetching data:", error);
-			setIsLoading(false);
-		}
-	};
 
 	const updateOptions = (data) => {
 		const groupingUnits = [
@@ -197,9 +181,7 @@ const Chart = ({ ticker }) => {
 
 	return (
 		<div style={{ height: "600px" }}>
-			{isLoading ? (
-				<div>Loading...</div>
-			) : chartOptions ? ( // Check if chartOptions is not null
+			{chartOptions ? ( // Check if chartOptions is not null
 				<HighchartsReact highcharts={Highcharts} options={chartOptions} />
 			) : (
 				<div>Error: No chart data available</div>

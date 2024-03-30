@@ -1,31 +1,9 @@
-import axios from "axios";
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Container } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
-const CompanyDescription = ({ companyData, ticker }) => {
-	const [peers, setPeers] = useState([]);
-	const [loading, setLoading] = useState(false);
-
-	const fetchPeerData = async () => {
-		try {
-			const response = await axios.get(`/stock/peers/${ticker}`);
-			const data = await response.data;
-			setPeers(data);
-		} catch (error) {
-			console.log(error);
-		}
-	};
-
-	useEffect(() => {
-		setLoading(true);
-		fetchPeerData();
-		setLoading(false);
-	}, []);
-
-	if (loading) {
-		return <h1>Loading Company Description</h1>;
-	}
+const CompanyDescription = ({ companyData, ticker, peers }) => {
+	useEffect(() => {}, [ticker]);
 
 	return (
 		<Container fluid className="text-center">
@@ -41,7 +19,9 @@ const CompanyDescription = ({ companyData, ticker }) => {
 			<p className="mb-2 fs-6">
 				Company Peers:
 				{peers.map((peer) => (
-					<Link to={`/search/${peer}`}>{peer}</Link>
+					<Link to={`/search/${peer}`} key={peer}>
+						{peer}
+					</Link>
 				))}
 				{/* {peers.join(" ")} */}
 			</p>

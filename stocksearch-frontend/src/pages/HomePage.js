@@ -15,6 +15,9 @@ const HomePage = () => {
 	const [companyDescription, setCompanyDescription] = useState({});
 	const [stockQuote, setStockQuote] = useState({});
 	const [hourlyChartData, setHourlyChartData] = useState([]);
+	const [peers, setPeers] = useState([]);
+	const [news, setNews] = useState([]);
+	const [chartData, setChartData] = useState(null);
 	const [user, setUser] = useState(
 		JSON.parse(localStorage.getItem("userInfo"))
 	);
@@ -45,6 +48,26 @@ const HomePage = () => {
 		}
 	};
 
+	const fetchPeerData = async (value) => {
+		try {
+			const response = await axios.get(`/stock/peers/${value}`);
+			const data = await response.data;
+			setPeers(data);
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
+	const fetchTopNews = async (value) => {
+		try {
+			const response = await axios.get(`/stock/news/${value}`);
+			const data = await response.data;
+			setNews(data);
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
 	const determineMarketStatus = () => {
 		let lastMarketTime = new Date(stockQuote["t"] * 1000);
 		let difference = Math.abs(new Date() - lastMarketTime);
@@ -67,6 +90,17 @@ const HomePage = () => {
 		}
 	};
 
+	const fetchChartData = async (value) => {
+		try {
+			const response = await axios.get(`/stock/charts/${value}`);
+			const data = await response.data;
+
+			setChartData(data);
+		} catch (error) {
+			console.error("Error fetching data:", error);
+		}
+	};
+
 	const fetchUserData = async () => {
 		try {
 			const response = await axios.get(`/user/`);
@@ -77,7 +111,6 @@ const HomePage = () => {
 		}
 	};
 
-	console.log("loading ", loading);
 	useEffect(() => {
 		// Update ticker state when searchTicker changes
 		setTicker(searchTicker || "");
@@ -88,6 +121,9 @@ const HomePage = () => {
 					fetchCompanyDescription(searchTicker),
 					fetchStockQuote(searchTicker),
 					fetchHourlyChartData(searchTicker),
+					fetchPeerData(searchTicker),
+					fetchTopNews(searchTicker),
+					fetchChartData(searchTicker),
 					fetchUserData(),
 				]);
 				setLoading(false);
@@ -135,6 +171,9 @@ const HomePage = () => {
 							companyDescription={companyDescription}
 							user={user}
 							hourlyChartData={hourlyChartData}
+							peers={peers}
+							news={news}
+							chartData={chartData}
 						/>
 					</>
 				)

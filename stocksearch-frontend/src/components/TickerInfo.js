@@ -12,6 +12,9 @@ const TickerInfo = ({
 	stockQuote,
 	user,
 	hourlyChartData,
+	peers,
+	news,
+	chartData,
 }) => {
 	const [key, setKey] = useState("summary");
 	return (
@@ -29,13 +32,14 @@ const TickerInfo = ({
 					stockQuote={stockQuote}
 					companyDescription={companyDescription}
 					hourlyChartData={hourlyChartData}
+					peers={peers}
 				/>
 			</Tab>
 			<Tab eventKey="top-news" title="Top News" className="">
-				<TopNews ticker={ticker} />
+				<TopNews ticker={ticker} news={news} />
 			</Tab>
 			<Tab eventKey="charts" title="Charts" className="">
-				<Charts ticker={ticker} />
+				<Charts ticker={ticker} chartData={chartData} />
 			</Tab>
 			<Tab eventKey="insights" title="Insights" className="">
 				<Insights ticker={ticker} />

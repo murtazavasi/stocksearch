@@ -31,7 +31,6 @@ const Insights = ({ ticker }) => {
 			let tempPositiveChange = 0;
 
 			data.data.forEach((item) => {
-				console.log(item);
 				tempTotalMSPR += item["mspr"];
 				tempTotalChange += item["change"];
 

@@ -85,7 +85,7 @@ const getCompanyNews = async (req, res) => {
 			articles.push(article);
 		}
 	});
-	res.json(articles);
+	res.json(articles.slice(0, 20));
 	// res.json(data);
 };
 

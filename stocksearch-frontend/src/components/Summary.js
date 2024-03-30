@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 
 import StockSummary from "./StockSummary";
@@ -10,6 +10,7 @@ const Summary = ({
 	companyDescription,
 	stockQuote,
 	hourlyChartData,
+	peers,
 }) => {
 	useEffect(() => {}, [ticker]);
 
@@ -24,6 +25,7 @@ const Summary = ({
 						<CompanyDescription
 							ticker={ticker}
 							companyData={companyDescription}
+							peers={peers}
 						/>
 					</Row>
 				</Col>

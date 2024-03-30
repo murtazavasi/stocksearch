@@ -1,32 +1,10 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React, { useEffect } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 
 import NewsArticle from "./NewsArticle";
 
-const TopNews = ({ ticker }) => {
-	const [news, setNews] = useState([]);
-	const [loading, setLoading] = useState(false);
-
-	const fetchTopNews = async () => {
-		try {
-			const response = await axios.get(`/stock/news/${ticker}`);
-			const data = await response.data;
-			setNews(data);
-		} catch (error) {
-			console.log(error);
-		}
-	};
-
-	useEffect(() => {
-		setLoading(true);
-		fetchTopNews();
-		setLoading(false);
-	}, [ticker]);
-
-	if (loading) {
-		return <h1>Loading...</h1>;
-	}
+const TopNews = ({ ticker, news }) => {
+	useEffect(() => {}, [ticker]);
 
 	return (
 		<Container>
