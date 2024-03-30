@@ -7,57 +7,21 @@ import Loader from "./utils/Loader";
 
 const StockDetails = ({
 	ticker,
+	stockQuote,
+	companyDescription,
+	user,
+	setUser,
 	setAlertContent,
 	setAlertVariant,
 	setIsAlertVisible,
 }) => {
-	const [companyDescription, setCompanyDescription] = useState({});
 	const [timestamp, setTimestamp] = useState(new Date());
-	const [stockQuote, setStockQuote] = useState({});
 	const [loading, setLoading] = useState(false);
 	const [isMarketOpen, setIsMarketOpen] = useState(true);
-	const [user, setUser] = useState(
-		JSON.parse(localStorage.getItem("userInfo"))
-	);
+
 	const [quantity, setQuantity] = useState(0);
 	const [isBuyVisible, setIsBuyVisible] = useState(false);
 	const [isSellVisible, setIsSellVisible] = useState(false);
-
-	const fetchStockQuote = async () => {
-		try {
-			const response = await axios.get(`/stock/quote/${ticker}`);
-			const data = await response.data;
-			setStockQuote(data);
-			setTimestamp(new Date(data["t"] * 1000));
-
-			let difference = Math.abs(new Date() - data["t"] * 1000);
-			let minutes = Math.floor(difference / 1000 / 60);
-			setIsMarketOpen(minutes < 5);
-		} catch (error) {
-			console.log(error);
-		}
-	};
-
-	const fetchCompanyDescription = async () => {
-		try {
-			const response = await axios.get(`/stock/company/${ticker}`);
-			const data = await response.data;
-
-			setCompanyDescription(data);
-		} catch (error) {
-			console.log(error);
-		}
-	};
-
-	const fetchUserData = async () => {
-		try {
-			const response = await axios.get(`/user/`);
-			const data = response.data;
-			setUser(data);
-		} catch (error) {
-			console.log(error);
-		}
-	};
 
 	const toggleWatchList = async () => {
 		try {
@@ -120,16 +84,11 @@ const StockDetails = ({
 	};
 
 	useEffect(() => {
-		setLoading(true);
-		fetchCompanyDescription();
-		fetchStockQuote();
-		fetchUserData();
-		setLoading(false);
-	}, [ticker]);
-
-	if (loading) {
-		return <h1>Loading</h1>;
-	}
+		setTimestamp(new Date(stockQuote["t"] * 1000));
+		let difference = Math.abs(new Date() - stockQuote["t"] * 1000);
+		let minutes = Math.floor(difference / 1000 / 60);
+		setIsMarketOpen(minutes < 5);
+	}, [ticker, stockQuote, companyDescription, user]);
 
 	return (
 		<Container className="my-4">

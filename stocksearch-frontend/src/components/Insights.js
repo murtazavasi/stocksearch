@@ -56,6 +56,7 @@ const Insights = ({ ticker }) => {
 			setNegativeMSPR(tempNegativeMSPR.toFixed(2));
 		} catch (error) {
 			setLoading(false);
+			console.log(error);
 		}
 	};
 

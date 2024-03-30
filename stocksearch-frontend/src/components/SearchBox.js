@@ -72,17 +72,11 @@ const SearchBox = ({
 	};
 
 	const handleSearch = () => {
-		// console.log(string, results);
-		setTicker(currTickerValue.toUpperCase());
 		setAutocompleteList([]);
 		navigate("/search/" + currTickerValue);
 	};
 
 	const handleSelect = (value) => {
-		console.log(value);
-		// console.log(e.target.textContent);
-		setTicker(value.toUpperCase());
-		// setCurrTickerValue(e.target.textContent.toUpperCase());
 		setAutocompleteList([]);
 		navigate("/search/" + value.toUpperCase());
 	};

@@ -12,47 +12,53 @@ const RecommendationTrendsChart = ({ ticker }) => {
 	const [chartOptions, setChartOptions] = useState(null);
 
 	const fetchColumnChartData = async () => {
-		const response = await axios.get(`/stock/recommendation-trends/${ticker}`);
-		const data = await response.data;
+		try {
+			const response = await axios.get(
+				`/stock/recommendation-trends/${ticker}`
+			);
+			const data = await response.data;
 
-		// Extract all keys present in the input data
-		const allKeys = Array.from(
-			new Set(data.flatMap((item) => Object.keys(item)))
-		);
+			// Extract all keys present in the input data
+			const allKeys = Array.from(
+				new Set(data.flatMap((item) => Object.keys(item)))
+			);
 
-		// Initialize an object to store values for each key
-		const valuesByKeys = {};
+			// Initialize an object to store values for each key
+			const valuesByKeys = {};
 
-		// Iterate over each key
-		allKeys.forEach((key) => {
-			// Initialize an array for the values corresponding to the key
-			valuesByKeys[key] = [];
+			// Iterate over each key
+			allKeys.forEach((key) => {
+				// Initialize an array for the values corresponding to the key
+				valuesByKeys[key] = [];
 
-			// Push the values corresponding to the key from each object into the array
-			data.forEach((item) => {
-				valuesByKeys[key].push(item[key]);
-			});
-		});
-
-		console.log(valuesByKeys);
-
-		let finalData = [];
-		let categories = [];
-		Object.entries(valuesByKeys).forEach(([key, value]) => {
-			if (key !== "period" && key !== "symbol") {
-				finalData.push({
-					name: key,
-					data: Array.from(value),
+				// Push the values corresponding to the key from each object into the array
+				data.forEach((item) => {
+					valuesByKeys[key].push(item[key]);
 				});
-			}
-			if (key === "period") {
-				categories = Array.from(value);
-			}
-		});
-		console.log(finalData);
-		updateOptions(categories, finalData);
-		setRecommendationTrends(data);
-		setCategories(categories);
+			});
+
+			console.log(valuesByKeys);
+
+			let finalData = [];
+			let categories = [];
+			Object.entries(valuesByKeys).forEach(([key, value]) => {
+				if (key !== "period" && key !== "symbol") {
+					finalData.push({
+						name: key,
+						data: Array.from(value),
+					});
+				}
+				if (key === "period") {
+					categories = Array.from(value);
+				}
+			});
+			console.log(finalData);
+			updateOptions(categories, finalData);
+			setRecommendationTrends(data);
+			setCategories(categories);
+		} catch (error) {
+			console.log(error);
+		}
 	};
 
 	const updateOptions = (categories, finalData) => {

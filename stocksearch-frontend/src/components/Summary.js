@@ -1,37 +1,25 @@
 import React, { useEffect, useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import axios from "axios";
 
 import StockSummary from "./StockSummary";
 import CompanyDescription from "./CompanyDescription";
 import WorkingDayChart from "./WorkingDayChart";
 
-const Summary = ({ ticker }) => {
-	const [companyInfo, setCompanyInfo] = useState({});
-
-	const fetchData = async () => {
-		try {
-			const response = await axios.get(`/stock/company/${ticker}`);
-			const data = await response.data;
-			setCompanyInfo(data);
-		} catch (error) {
-			console.log(error);
-		}
-	};
-
-	useEffect(() => {
-		fetchData();
-	}, [ticker]);
+const Summary = ({ ticker, companyDescription, stockQuote }) => {
+	useEffect(() => {}, [ticker]);
 
 	return (
 		<Container>
 			<Row>
 				<Col>
 					<Row>
-						<StockSummary ticker={ticker} />
+						<StockSummary ticker={ticker} stockQuote={stockQuote} />
 					</Row>
 					<Row>
-						<CompanyDescription ticker={ticker} companyData={companyInfo} />
+						<CompanyDescription
+							ticker={ticker}
+							companyData={companyDescription}
+						/>
 					</Row>
 				</Col>
 				<Col>

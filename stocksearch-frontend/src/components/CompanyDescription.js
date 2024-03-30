@@ -8,9 +8,13 @@ const CompanyDescription = ({ companyData, ticker }) => {
 	const [loading, setLoading] = useState(false);
 
 	const fetchPeerData = async () => {
-		const response = await axios.get(`/stock/peers/${ticker}`);
-		const data = await response.data;
-		setPeers(data);
+		try {
+			const response = await axios.get(`/stock/peers/${ticker}`);
+			const data = await response.data;
+			setPeers(data);
+		} catch (error) {
+			console.log(error);
+		}
 	};
 
 	useEffect(() => {

@@ -10,12 +10,16 @@ const WorkingDayChart = ({ ticker }) => {
 	const [loading, setLoading] = useState(false);
 
 	const fetchChartData = async () => {
-		const response = await axios.get(
-			`/stock/charts/hourly-validation/${ticker}`
-		);
-		const data = await response.data;
-		const temp = data.results.map((item) => [item["t"], item["c"]]);
-		setChartData(temp);
+		try {
+			const response = await axios.get(
+				`/stock/charts/hourly-validation/${ticker}`
+			);
+			const data = await response.data;
+			const temp = data.results.map((item) => [item["t"], item["c"]]);
+			setChartData(temp);
+		} catch (error) {
+			console.log(error);
+		}
 	};
 
 	useEffect(() => {
