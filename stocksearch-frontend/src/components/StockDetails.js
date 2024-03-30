@@ -58,7 +58,7 @@ const StockDetails = ({
 		setIsBuyVisible(false);
 		setIsAlertVisible(true);
 		setAlertContent(ticker + " bought successfully");
-		setAlertVariant("info");
+		setAlertVariant("success");
 
 		// Update the user and stockList to update the quantity
 		setUser(updatedUser);
@@ -119,7 +119,7 @@ const StockDetails = ({
 			) : (
 				<>
 					<Row className="gy-4">
-						<Col className="text-center" xl={4}>
+						<Col className="text-center" xs={4}>
 							<h2 className="fs-1">
 								{companyDescription.ticker}
 								<span onClick={toggleWatchList} className="fs-3 mx-2">
@@ -151,14 +151,14 @@ const StockDetails = ({
 								</Button>
 							)}
 						</Col>
-						<Col className="text-center" xl={4}>
+						<Col className="text-center" xs={4}>
 							<Image
 								fluid
-								className="w-25 object-fit-contain"
+								className="w-75 object-fit-contain"
 								src={companyDescription.logo}
 							/>
 						</Col>
-						<Col className="text-center" xl={4}>
+						<Col className="text-center" xs={4}>
 							{stockQuote.dp > 0 ? (
 								<>
 									<h2 className="text-success fs-1">{stockQuote.c}</h2>
@@ -177,7 +177,11 @@ const StockDetails = ({
 								</>
 							)}
 							<p className="fs-6 text-body-secondary">
-								{timestamp.toISOString()}
+								{timestamp
+									.toISOString()
+									.slice(0, 19)
+									.replace("T", " ")
+									.replace("Z", " ")}
 							</p>
 						</Col>
 					</Row>
@@ -188,7 +192,12 @@ const StockDetails = ({
 							</p>
 						) : (
 							<p className="text-center text-danger fw-medium">
-								Market closed on {timestamp.toISOString()}
+								Market closed on{" "}
+								{timestamp
+									.toISOString()
+									.slice(0, 19)
+									.replace("T", " ")
+									.replace("Z", " ")}
 							</p>
 						)}
 					</Row>

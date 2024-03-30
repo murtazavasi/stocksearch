@@ -18,26 +18,31 @@ const NewsArticle = ({ article }) => {
 				article={article}
 			/>
 			<Card
-				className="h-100 my-auto"
+				className="h-100 my-auto p-2"
 				onClick={() => showModal(article)}
 				style={{ cursor: "pointer" }}
 			>
 				<Row
 					className="justify-content-space-around align-items-stretch align-content-center"
-					style={{ height: "100px" }}
+					// style={{ height: "100px" }}
 				>
-					<Col xl={3} className="">
-						<div className="overflow-hidden rounded d-flex justify-content-center">
+					<Col xl={3} className="mx-auto my-auto">
+						<div className="rounded w-100">
 							<Image
 								fluid
 								src={article.image}
-								className="object-fit-contain rounded"
+								className="object-fit-cover rounded mw-100 mh-100"
 							/>
 						</div>
 					</Col>
-					<Col>
+					<Col className="my-auto">
 						<Card.Body>
-							<Card.Title className="fs-6">{article.headline}</Card.Title>
+							<Card.Title
+								className="text-center"
+								style={{ fontSize: "0.75rem" }}
+							>
+								{article.headline}
+							</Card.Title>
 						</Card.Body>
 					</Col>
 				</Row>

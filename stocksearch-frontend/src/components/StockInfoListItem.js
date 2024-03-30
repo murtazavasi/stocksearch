@@ -59,7 +59,7 @@ const StockInfoListItem = ({
 		setIsBuyVisible(false);
 		setIsAlertVisible(true);
 		setAlertContent(stock.ticker + " bought successfully");
-		setAlertVariant("info");
+		setAlertVariant("success");
 
 		// Update the user and stockList to update the quantity
 		setStockList(updatedUser.stocksBought);
@@ -87,22 +87,20 @@ const StockInfoListItem = ({
 	};
 
 	useEffect(() => {
-		// setLoading(true);
 		fetchStockInfo();
 		fetchCompanyDescription();
-
-		let cps = parseFloat((stock.totalCost / stock.quantity).toFixed(2));
-		setCostPerShare(cps);
-
-		let chge = parseFloat((cps - stockInfo.c).toFixed(2));
-		setChange(chge);
-		setMarketValue(stockInfo.c * stock.quantity);
-		// setLoading(false);
 	}, []);
 
-	if (loading) {
-		return <h1>Loading</h1>;
-	}
+	useEffect(() => {
+		if (stockInfo.c) {
+			let cps = parseFloat((stock.totalCost / stock.quantity).toFixed(2));
+			setCostPerShare(cps);
+
+			let chge = parseFloat((cps - stockInfo.c).toFixed(2));
+			setChange(chge);
+			setMarketValue(stockInfo.c * stock.quantity);
+		}
+	}, [stockInfo]);
 
 	return (
 		<Card className="my-4">
@@ -138,7 +136,15 @@ const StockInfoListItem = ({
 					<Col>Quantity:</Col>
 					<Col>{stock.quantity}</Col>
 					<Col>Change:</Col>
-					<Col className={change > 0 ? "text-success" : "text-danger"}>
+					<Col
+						className={
+							change === 0
+								? "text-dark"
+								: change > 0
+								? "text-success"
+								: "text-danger"
+						}
+					>
 						{change > 0 ? (
 							<i className="bi bi-caret-up-fill"></i>
 						) : (
@@ -151,7 +157,15 @@ const StockInfoListItem = ({
 					<Col>Avg. Cost / Share:</Col>
 					<Col>{costPerShare}</Col>
 					<Col>Current Price:</Col>
-					<Col className={change > 0 ? "text-success" : "text-danger"}>
+					<Col
+						className={
+							change === 0
+								? "text-dark"
+								: change > 0
+								? "text-success"
+								: "text-danger"
+						}
+					>
 						{stockInfo.c}
 					</Col>
 				</Row>
@@ -159,7 +173,15 @@ const StockInfoListItem = ({
 					<Col>Total Cost:</Col>
 					<Col>{stock?.totalCost?.toFixed(2)}</Col>
 					<Col>Market Value:</Col>
-					<Col className={change > 0 ? "text-success" : "text-danger"}>
+					<Col
+						className={
+							change === 0
+								? "text-dark"
+								: change > 0
+								? "text-success"
+								: "text-danger"
+						}
+					>
 						{marketValue}
 					</Col>
 				</Row>
