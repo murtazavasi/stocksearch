@@ -22,7 +22,7 @@ const StockInfoList = ({ user, loading, setLoading, setUserInfo }) => {
 			{isAlertVisible && (
 				<CustomAlert content={alertContent} variant={alertVariant} />
 			)}
-			{!loading && <h4>Money in Wallet: ${money?.toFixed(2)}</h4>}
+			{!loading && <h4>Money in Wallet: ${balance?.toFixed(2)}</h4>}
 			{!loading &&
 				stockList &&
 				stockList.length > 0 &&
@@ -30,7 +30,8 @@ const StockInfoList = ({ user, loading, setLoading, setUserInfo }) => {
 					<StockInfoListItem
 						key={idx}
 						stock={stock}
-						money={money}
+						money={balance}
+						setMoney={setBalance}
 						loading={loading}
 						setLoading={setLoading}
 						setIsAlertVisible={setIsAlertVisible}

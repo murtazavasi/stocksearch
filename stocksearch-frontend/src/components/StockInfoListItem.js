@@ -8,6 +8,7 @@ import BuyModal from "./BuyModal";
 const StockInfoListItem = ({
 	stock,
 	money,
+	setMoney,
 	loading,
 	setLoading,
 	setIsAlertVisible,
@@ -16,6 +17,9 @@ const StockInfoListItem = ({
 	setUserInfo,
 	setStockList,
 }) => {
+	const [change, setChange] = useState(0);
+	const [costPerShare, setCostPerShare] = useState(0);
+	const [marketValue, setMarketValue] = useState(0);
 	const [quantity, setQuantity] = useState(0);
 	const [stockInfo, setStockInfo] = useState({});
 	const [isBuyVisible, setIsBuyVisible] = useState(false);
@@ -59,6 +63,7 @@ const StockInfoListItem = ({
 
 		// Update the user and stockList to update the quantity
 		setStockList(updatedUser.stocksBought);
+		setMoney(updatedUser.money);
 	};
 
 	const handleSell = async () => {
@@ -78,22 +83,26 @@ const StockInfoListItem = ({
 
 		// Update the user and stockList to update the quantity
 		setStockList(updatedUser.stocksBought);
+		setMoney(updatedUser.money);
 	};
 
 	useEffect(() => {
 		// setLoading(true);
 		fetchStockInfo();
 		fetchCompanyDescription();
+
+		let cps = parseFloat((stock.totalCost / stock.quantity).toFixed(2));
+		setCostPerShare(cps);
+
+		let chge = parseFloat((cps - stockInfo.c).toFixed(2));
+		setChange(chge);
+		setMarketValue(stockInfo.c * stock.quantity);
 		// setLoading(false);
 	}, []);
 
 	if (loading) {
 		return <h1>Loading</h1>;
 	}
-
-	const costPerShare = (stock.totalCost / stock.quantity).toFixed(2);
-	const change = costPerShare - stockInfo.c;
-	const marketValue = stockInfo.c * stock.quantity;
 
 	return (
 		<Card className="my-4">
@@ -151,7 +160,7 @@ const StockInfoListItem = ({
 					<Col>{stock?.totalCost?.toFixed(2)}</Col>
 					<Col>Market Value:</Col>
 					<Col className={change > 0 ? "text-success" : "text-danger"}>
-						{marketValue?.toFixed(2)}
+						{marketValue}
 					</Col>
 				</Row>
 			</Card.Body>
