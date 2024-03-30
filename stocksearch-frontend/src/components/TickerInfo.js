@@ -14,22 +14,19 @@ const TickerInfo = ({ ticker }) => {
 			activeKey={key}
 			onSelect={(k) => setKey(k)}
 			className="mb-3 my-tabs"
-			style={{
-				display: "flex",
-				justifyContent: "space-around",
-				alignItems: "center",
-			}}
+			fill
+			variant="underline"
 		>
-			<Tab eventKey="summary" title="Summary" className="w-100 flex-grow-1">
+			<Tab eventKey="summary" title="Summary" className="">
 				<Summary ticker={ticker} />
 			</Tab>
-			<Tab eventKey="top-news" title="Top News" className="w-100 flex-grow-1">
+			<Tab eventKey="top-news" title="Top News" className="">
 				<TopNews ticker={ticker} />
 			</Tab>
-			<Tab eventKey="charts" title="Charts" className="w-100 flex-grow-1">
+			<Tab eventKey="charts" title="Charts" className="">
 				<Charts ticker={ticker} />
 			</Tab>
-			<Tab eventKey="insights" title="Insights" className="w-100 flex-grow-1">
+			<Tab eventKey="insights" title="Insights" className="">
 				<Insights ticker={ticker} />
 			</Tab>
 		</Tabs>

@@ -125,7 +125,7 @@ const StockDetails = ({
 		fetchStockQuote();
 		fetchUserData();
 		setLoading(false);
-	}, []);
+	}, [ticker]);
 
 	if (loading) {
 		return <h1>Loading</h1>;

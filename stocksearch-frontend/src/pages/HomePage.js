@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useParams, useLocation } from "react-router-dom";
 import { Container } from "react-bootstrap";
 
 import SearchBox from "../components/SearchBox";
@@ -8,11 +8,16 @@ import StockDetails from "../components/StockDetails";
 import CustomAlert from "../components/CustomAlert";
 
 const HomePage = () => {
-	const { ticker: searchTicker } = useParams();
+	const { keyword: searchTicker } = useParams();
 	const [ticker, setTicker] = useState(searchTicker || "");
 	const [isAlertVisible, setIsAlertVisible] = useState(false);
 	const [alertContent, setAlertContent] = useState("");
 	const [alertVariant, setAlertVariant] = useState("info");
+
+	useEffect(() => {
+		// Update ticker state when searchTicker changes
+		setTicker(searchTicker || "");
+	}, [searchTicker]);
 
 	return (
 		<Container>

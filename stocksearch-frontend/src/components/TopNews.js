@@ -9,16 +9,20 @@ const TopNews = ({ ticker }) => {
 	const [loading, setLoading] = useState(false);
 
 	const fetchTopNews = async () => {
-		const response = await axios.get(`/stock/news/${ticker}`);
-		const data = await response.data;
-		setNews(data);
+		try {
+			const response = await axios.get(`/stock/news/${ticker}`);
+			const data = await response.data;
+			setNews(data);
+		} catch (error) {
+			console.log(error);
+		}
 	};
 
 	useEffect(() => {
 		setLoading(true);
 		fetchTopNews();
 		setLoading(false);
-	}, []);
+	}, [ticker]);
 
 	if (loading) {
 		return <h1>Loading...</h1>;

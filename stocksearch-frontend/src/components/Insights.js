@@ -63,7 +63,7 @@ const Insights = ({ ticker }) => {
 		setLoading(true);
 		fetchInsights();
 		setLoading(false);
-	}, []);
+	}, [ticker]);
 
 	if (loading) {
 		return <h1>Loading</h1>;

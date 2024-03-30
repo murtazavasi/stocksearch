@@ -17,7 +17,7 @@ const Chart = ({ ticker }) => {
 
 	useEffect(() => {
 		fetchData();
-	}, []);
+	}, [ticker]);
 
 	const fetchData = async () => {
 		try {
@@ -52,7 +52,7 @@ const Chart = ({ ticker }) => {
 
 		const options = {
 			title: {
-				text: "AAPL Historical",
+				text: ticker + " Historical",
 			},
 
 			subtitle: {

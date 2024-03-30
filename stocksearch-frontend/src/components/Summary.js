@@ -10,14 +10,18 @@ const Summary = ({ ticker }) => {
 	const [companyInfo, setCompanyInfo] = useState({});
 
 	const fetchData = async () => {
-		const response = await axios.get(`/stock/company/${ticker}`);
-		const data = await response.data;
-		setCompanyInfo(data);
+		try {
+			const response = await axios.get(`/stock/company/${ticker}`);
+			const data = await response.data;
+			setCompanyInfo(data);
+		} catch (error) {
+			console.log(error);
+		}
 	};
 
 	useEffect(() => {
 		fetchData();
-	}, []);
+	}, [ticker]);
 
 	return (
 		<Container>
