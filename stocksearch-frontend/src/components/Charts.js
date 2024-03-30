@@ -16,7 +16,7 @@ const Chart = ({ ticker }) => {
 	const [chartOptions, setChartOptions] = useState(null);
 
 	useEffect(() => {
-		fetchData();
+		// fetchData();
 	}, [ticker]);
 
 	const fetchData = async () => {

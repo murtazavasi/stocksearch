@@ -1,36 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 
 import HighCharts from "highcharts/highstock";
 import HighchartsReact from "highcharts-react-official";
 
-import axios from "axios";
-
-const WorkingDayChart = ({ ticker }) => {
-	const [chartData, setChartData] = useState([]);
-	const [loading, setLoading] = useState(false);
-
-	const fetchChartData = async () => {
-		try {
-			const response = await axios.get(
-				`/stock/charts/hourly-validation/${ticker}`
-			);
-			const data = await response.data;
-			const temp = data.results.map((item) => [item["t"], item["c"]]);
-			setChartData(temp);
-		} catch (error) {
-			console.log(error);
-		}
-	};
-
-	useEffect(() => {
-		setLoading(true);
-		fetchChartData();
-		setLoading(false);
-	}, []);
-
-	if (loading) {
-		return <h1>Loading Chart Data</h1>;
-	}
+const WorkingDayChart = ({ ticker, hourlyChartData }) => {
+	useEffect(() => {}, [hourlyChartData]);
 
 	const options = {
 		title: {
@@ -47,9 +21,8 @@ const WorkingDayChart = ({ ticker }) => {
 		xAxis: [
 			{
 				type: "datetime",
-				dateTimeLabelFormats: {
-					hour: "%I %p",
-					minute: "%I:%M %p",
+				labels: {
+					format: "{value:%H:%M}",
 				},
 			},
 		],
@@ -70,21 +43,27 @@ const WorkingDayChart = ({ ticker }) => {
 		series: [
 			{
 				type: "spline",
-				data: chartData,
+				data: hourlyChartData,
 			},
 		],
 	};
 
 	return (
 		<>
-			{chartData.length > 0 ? (
+			{hourlyChartData.length > 0 ? (
 				<HighchartsReact
 					highcharts={HighCharts}
 					constructorType={"stockChart"}
 					options={options}
 				></HighchartsReact>
 			) : (
-				<h1>Loading</h1>
+				hourlyChartData.length === 0 && (
+					<HighchartsReact
+						highcharts={HighCharts}
+						constructorType={"stockChart"}
+						options={options}
+					></HighchartsReact>
+				)
 			)}
 		</>
 	);

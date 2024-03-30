@@ -5,7 +5,12 @@ import StockSummary from "./StockSummary";
 import CompanyDescription from "./CompanyDescription";
 import WorkingDayChart from "./WorkingDayChart";
 
-const Summary = ({ ticker, companyDescription, stockQuote }) => {
+const Summary = ({
+	ticker,
+	companyDescription,
+	stockQuote,
+	hourlyChartData,
+}) => {
 	useEffect(() => {}, [ticker]);
 
 	return (
@@ -23,7 +28,7 @@ const Summary = ({ ticker, companyDescription, stockQuote }) => {
 					</Row>
 				</Col>
 				<Col>
-					<WorkingDayChart ticker={ticker} />
+					<WorkingDayChart ticker={ticker} hourlyChartData={hourlyChartData} />
 				</Col>
 			</Row>
 		</Container>

@@ -14,6 +14,7 @@ const HomePage = () => {
 	const [ticker, setTicker] = useState(searchTicker || "");
 	const [companyDescription, setCompanyDescription] = useState({});
 	const [stockQuote, setStockQuote] = useState({});
+	const [hourlyChartData, setHourlyChartData] = useState([]);
 	const [user, setUser] = useState(
 		JSON.parse(localStorage.getItem("userInfo"))
 	);
@@ -44,6 +45,28 @@ const HomePage = () => {
 		}
 	};
 
+	const determineMarketStatus = () => {
+		let lastMarketTime = new Date(stockQuote["t"] * 1000);
+		let difference = Math.abs(new Date() - lastMarketTime);
+		let minutes = Math.floor(difference / 1000 / 60);
+		return minutes < 5;
+	};
+
+	const fetchHourlyChartData = async (value) => {
+		try {
+			const response = await axios.get(
+				`/stock/charts/hourly-validation/${value}`
+			);
+			const data = await response.data;
+			const temp = data.results.map((item) => [item["t"], item["c"]]);
+			console.log(temp);
+
+			setHourlyChartData(temp);
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
 	const fetchUserData = async () => {
 		try {
 			const response = await axios.get(`/user/`);
@@ -64,6 +87,7 @@ const HomePage = () => {
 				await Promise.all([
 					fetchCompanyDescription(searchTicker),
 					fetchStockQuote(searchTicker),
+					fetchHourlyChartData(searchTicker),
 					fetchUserData(),
 				]);
 				setLoading(false);
@@ -110,6 +134,7 @@ const HomePage = () => {
 							stockQuote={stockQuote}
 							companyDescription={companyDescription}
 							user={user}
+							hourlyChartData={hourlyChartData}
 						/>
 					</>
 				)

@@ -52,16 +52,11 @@ const getHourlyValidation = async (req, res) => {
 	const multiplier = 1;
 	const timespan = "hour";
 	const toDate = new Date().toISOString().split("T")[0];
-	// console.log(toDate);
 
-	// let fromDate = toDate;
-	let fromDate = addMonths(new Date(), -6);
-	fromDate = addDays(fromDate, -1).toISOString().split("T")[0];
+	let fromDate = addDays(new Date(), -3).toISOString().split("T")[0];
 	console.log(fromDate);
 
 	let polygon_url = `${polygon_base_url}/aggs/ticker/${ticker_symbol.toUpperCase()}/range/${multiplier}/${timespan}/${fromDate}/${toDate}?adjusted=true&sort=asc&apiKey=${polygon_api_key}`;
-
-	// console.log(polygon_url);
 
 	const response = await axios.get(polygon_url);
 	res.json(response.data);
