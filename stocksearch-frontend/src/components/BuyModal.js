@@ -1,23 +1,23 @@
 import { Modal, Button, Form } from "react-bootstrap";
+import { useTickerContext } from "../context/TickerContext";
 
 const BuyModal = ({
 	show,
 	handleClose,
-	ticker,
-	currentPrice,
 	balance,
 	quantity,
 	setQuantity,
 	onClickHandler,
 	btnText,
 }) => {
+	const { currentTickerSymbol: ticker, currentTickerData } = useTickerContext();
 	return (
 		<Modal show={show} onHide={handleClose} backdrop="static" keyboard={false}>
 			<Modal.Header closeButton>
 				<Modal.Title>{ticker}</Modal.Title>
 			</Modal.Header>
 			<Modal.Body>
-				<p>Current Price: {currentPrice} </p>
+				<p>Current Price: {currentTickerData.stockInfo.c} </p>
 				<p>Money in the wallet: {balance?.toFixed(2)}</p>
 				<Form.Label htmlFor="quantity">Quantity</Form.Label>
 				<Form.Control
@@ -28,7 +28,7 @@ const BuyModal = ({
 				/>
 			</Modal.Body>
 			<Modal.Footer className="justify-content-between">
-				<p>Total: {(currentPrice * quantity).toFixed(2)}</p>
+				<p>Total: {(currentTickerData.stockInfo.c * quantity).toFixed(2)}</p>
 				<Button
 					variant={btnText === "Buy" ? "success" : "danger"}
 					onClick={onClickHandler}

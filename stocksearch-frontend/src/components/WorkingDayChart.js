@@ -2,9 +2,12 @@ import React, { useEffect } from "react";
 
 import HighCharts from "highcharts/highstock";
 import HighchartsReact from "highcharts-react-official";
+import { useTickerContext } from "../context/TickerContext";
 
-const WorkingDayChart = ({ ticker, hourlyChartData }) => {
-	useEffect(() => {}, [hourlyChartData]);
+const WorkingDayChart = () => {
+	// useEffect(() => {}, [hourlyChartData]);
+
+	const { currentTickerSymbol: ticker, currentTickerData } = useTickerContext();
 
 	const options = {
 		title: {
@@ -43,21 +46,21 @@ const WorkingDayChart = ({ ticker, hourlyChartData }) => {
 		series: [
 			{
 				type: "spline",
-				data: hourlyChartData,
+				data: currentTickerData.hourlyChartData,
 			},
 		],
 	};
 
 	return (
 		<>
-			{hourlyChartData.length > 0 ? (
+			{currentTickerData.hourlyChartData.length > 0 ? (
 				<HighchartsReact
 					highcharts={HighCharts}
 					constructorType={"stockChart"}
 					options={options}
 				></HighchartsReact>
 			) : (
-				hourlyChartData.length === 0 && (
+				currentTickerData.hourlyChartData.length === 0 && (
 					<HighchartsReact
 						highcharts={HighCharts}
 						constructorType={"stockChart"}

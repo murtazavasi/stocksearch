@@ -1,14 +1,12 @@
 import { useState, useEffect } from "react";
 import { Row, Col, Table } from "react-bootstrap";
 
-import axios from "axios";
-
 import RecommendationTrendsChart from "./RecommendationTrendsChart";
 import HistoricalSurprisesChart from "./HistoricalSurprisesChart";
+import { useTickerContext } from "../context/TickerContext";
 
-const Insights = ({ ticker }) => {
-	const [insights, setInsights] = useState({});
-	const [loading, setLoading] = useState(false);
+const Insights = () => {
+	const { currentTickerSymbol: ticker, currentTickerData } = useTickerContext();
 
 	let [totalMSPR, setTotalMSPR] = useState(0);
 	let [positiveMSPR, setPositiveMSPR] = useState(0);
@@ -17,12 +15,8 @@ const Insights = ({ ticker }) => {
 	let [negativeChange, setNegativeChange] = useState(0);
 	let [positiveChange, setPositiveChange] = useState(0);
 
-	const fetchInsights = async () => {
+	const fetchInsights = (data) => {
 		try {
-			const response = await axios.get(`/stock/insider-sentiment/${ticker}`);
-			const data = await response.data;
-			setInsights(data);
-
 			let tempTotalMSPR = 0;
 			let tempPositiveMSPR = 0;
 			let tempNegativeMSPR = 0;
@@ -54,20 +48,13 @@ const Insights = ({ ticker }) => {
 			setNegativeChange(tempNegativeChange.toFixed(2));
 			setNegativeMSPR(tempNegativeMSPR.toFixed(2));
 		} catch (error) {
-			setLoading(false);
 			console.log(error);
 		}
 	};
 
 	useEffect(() => {
-		setLoading(true);
-		fetchInsights();
-		setLoading(false);
-	}, [ticker]);
-
-	if (loading) {
-		return <h1>Loading</h1>;
-	}
+		fetchInsights(currentTickerData.insiderSentiments);
+	}, [currentTickerData.insiderSentiments]);
 
 	return (
 		<>

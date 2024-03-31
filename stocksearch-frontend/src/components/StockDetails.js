@@ -4,11 +4,9 @@ import { Container, Row, Col, Button, Image } from "react-bootstrap";
 import axios from "axios";
 import BuyModal from "./BuyModal";
 import Loader from "./utils/Loader";
+import { useTickerContext } from "../context/TickerContext";
 
 const StockDetails = ({
-	ticker,
-	stockQuote,
-	companyDescription,
 	user,
 	setUser,
 	setAlertContent,
@@ -22,6 +20,10 @@ const StockDetails = ({
 	const [quantity, setQuantity] = useState(0);
 	const [isBuyVisible, setIsBuyVisible] = useState(false);
 	const [isSellVisible, setIsSellVisible] = useState(false);
+
+	const { currentTickerSymbol: ticker, currentTickerData } = useTickerContext();
+
+	console.log(currentTickerData);
 
 	const toggleWatchList = async () => {
 		try {
@@ -47,9 +49,11 @@ const StockDetails = ({
 	const handleBuy = async () => {
 		const response = await axios.post(`/buy`, {
 			ticker: ticker,
-			name: companyDescription.name,
+			name: currentTickerData.companyDescription.name,
 			quantity: parseInt(quantity),
-			totalCost: (parseInt(quantity) * parseFloat(stockQuote.c)).toFixed(2),
+			totalCost: (
+				parseInt(quantity) * parseFloat(currentTickerData.stockInfo.c)
+			).toFixed(2),
 		});
 		const updatedUser = await response.data;
 		setQuantity(0);
@@ -68,7 +72,9 @@ const StockDetails = ({
 		const response = await axios.post(`/sell`, {
 			ticker: ticker,
 			quantity: parseInt(quantity),
-			cost: (parseInt(quantity) * parseFloat(stockQuote.c)).toFixed(2),
+			cost: (
+				parseInt(quantity) * parseFloat(currentTickerData.stockInfo.c)
+			).toFixed(2),
 		});
 		const updatedUser = await response.data;
 		setQuantity(0);
@@ -84,11 +90,13 @@ const StockDetails = ({
 	};
 
 	useEffect(() => {
-		setTimestamp(new Date(stockQuote["t"] * 1000));
-		let difference = Math.abs(new Date() - stockQuote["t"] * 1000);
+		setTimestamp(new Date(currentTickerData.stockInfo["t"] * 1000));
+		let difference = Math.abs(
+			new Date() - currentTickerData.stockInfo["t"] * 1000
+		);
 		let minutes = Math.floor(difference / 1000 / 60);
 		setIsMarketOpen(minutes < 5);
-	}, [ticker, stockQuote, companyDescription, user]);
+	}, [ticker, user]);
 
 	return (
 		<Container className="my-4">
@@ -97,8 +105,8 @@ const StockDetails = ({
 				handleClose={() => setIsBuyVisible(false)}
 				quantity={quantity}
 				setQuantity={setQuantity}
-				ticker={ticker}
-				currentPrice={stockQuote.c}
+				// ticker={ticker}
+				// currentPrice={stockQuote.c}
 				balance={user?.money}
 				onClickHandler={handleBuy}
 				btnText={"Buy"}
@@ -108,8 +116,8 @@ const StockDetails = ({
 				handleClose={() => setIsSellVisible(false)}
 				quantity={quantity}
 				setQuantity={setQuantity}
-				ticker={ticker}
-				currentPrice={stockQuote.c}
+				// ticker={ticker}
+				// currentPrice={stockQuote.c}
 				balance={user?.money}
 				onClickHandler={handleSell}
 				btnText={"Sell"}
@@ -121,11 +129,9 @@ const StockDetails = ({
 					<Row className="gy-4">
 						<Col className="text-center" xs={4}>
 							<h2 className="fs-1">
-								{companyDescription.ticker}
+								{ticker}
 								<span onClick={toggleWatchList} className="fs-3 mx-2">
-									{user &&
-									user.watchList &&
-									user.watchList.includes(companyDescription.ticker) ? (
+									{user && user.watchList && user.watchList.includes(ticker) ? (
 										<i className="bi bi-star-fill"></i>
 									) : (
 										<i className="bi bi-star"></i>
@@ -133,9 +139,11 @@ const StockDetails = ({
 								</span>
 							</h2>
 							<h3 className="fs-4 text-body-secondary">
-								{companyDescription.name}
+								{currentTickerData.companyDescription.name}
 							</h3>
-							<p className="fs-6">{companyDescription.exchange}</p>
+							<p className="fs-6">
+								{currentTickerData.companyDescription.exchange}
+							</p>
 							<Button variant="success" onClick={() => setIsBuyVisible(true)}>
 								Buy
 							</Button>
@@ -155,24 +163,30 @@ const StockDetails = ({
 							<Image
 								fluid
 								className="w-75 object-fit-contain"
-								src={companyDescription.logo}
+								src={currentTickerData.companyDescription.logo}
 							/>
 						</Col>
 						<Col className="text-center" xs={4}>
-							{stockQuote.dp > 0 ? (
+							{currentTickerData.stockInfo.dp > 0 ? (
 								<>
-									<h2 className="text-success fs-1">{stockQuote.c}</h2>
+									<h2 className="text-success fs-1">
+										{currentTickerData.stockInfo.c}
+									</h2>
 									<h4 className="text-success fs-4">
 										<i className="bi bi-caret-up-fill"></i>
-										{stockQuote.d} ({stockQuote?.dp?.toFixed(2)} %)
+										{currentTickerData.stockInfo.d} (
+										{currentTickerData.stockInfo?.dp?.toFixed(2)} %)
 									</h4>
 								</>
 							) : (
 								<>
-									<h2 className="text-danger fs-1">{stockQuote.c}</h2>
+									<h2 className="text-danger fs-1">
+										{currentTickerData.stockInfo.c}
+									</h2>
 									<h4 className="text-danger fs-4">
 										<i className="bi bi-caret-down-fill"></i>
-										{stockQuote.d} ({stockQuote?.dp?.toFixed(2)} %)
+										{currentTickerData.stockInfo.d} (
+										{currentTickerData.stockInfo?.dp?.toFixed(2)} %)
 									</h4>
 								</>
 							)}

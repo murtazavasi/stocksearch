@@ -6,16 +6,7 @@ import TopNews from "./TopNews";
 import Charts from "./Charts.js";
 import Insights from "./Insights";
 
-const TickerInfo = ({
-	ticker,
-	companyDescription,
-	stockQuote,
-	user,
-	hourlyChartData,
-	peers,
-	news,
-	chartData,
-}) => {
+const TickerInfo = ({ ticker }) => {
 	const [key, setKey] = useState("summary");
 	return (
 		<Tabs
@@ -27,19 +18,13 @@ const TickerInfo = ({
 			variant="underline"
 		>
 			<Tab eventKey="summary" title="Summary" className="">
-				<Summary
-					ticker={ticker}
-					stockQuote={stockQuote}
-					companyDescription={companyDescription}
-					hourlyChartData={hourlyChartData}
-					peers={peers}
-				/>
+				<Summary ticker={ticker} />
 			</Tab>
 			<Tab eventKey="top-news" title="Top News" className="">
-				<TopNews ticker={ticker} news={news} />
+				<TopNews ticker={ticker} />
 			</Tab>
 			<Tab eventKey="charts" title="Charts" className="">
-				<Charts ticker={ticker} chartData={chartData} />
+				<Charts ticker={ticker} />
 			</Tab>
 			<Tab eventKey="insights" title="Insights" className="">
 				<Insights ticker={ticker} />

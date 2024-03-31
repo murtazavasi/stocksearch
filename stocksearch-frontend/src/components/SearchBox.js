@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 import Loader from "./utils/Loader";
 import classes from "./SearchBox.module.css";
+import { useTickerContext } from "../context/TickerContext";
 
 const SearchBox = ({
 	ticker,
@@ -14,7 +15,11 @@ const SearchBox = ({
 }) => {
 	let navigate = useNavigate();
 
-	const [currTickerValue, setCurrTickerValue] = useState("");
+	const { currentTickerSymbol, removeCurrentTicker } = useTickerContext();
+
+	const [currTickerValue, setCurrTickerValue] = useState(
+		currentTickerSymbol || ""
+	);
 	const [autocompleteList, setAutocompleteList] = useState([]);
 
 	const [isLoading, setIsLoading] = useState(false);
@@ -97,8 +102,9 @@ const SearchBox = ({
 				<i
 					className={`bi bi-x ${classes.icon} input-group-text`}
 					onClick={() => {
-						setCurrTickerValue("");
 						setAutocompleteList([]);
+						removeCurrentTicker();
+						setCurrTickerValue("");
 						setTicker("");
 						navigate("/");
 					}}

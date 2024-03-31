@@ -2,14 +2,17 @@ import React, { useEffect } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 
 import NewsArticle from "./NewsArticle";
+import { useTickerContext } from "../context/TickerContext";
 
-const TopNews = ({ ticker, news }) => {
+const TopNews = ({ ticker }) => {
 	useEffect(() => {}, [ticker]);
+
+	const { currentTickerData } = useTickerContext();
 
 	return (
 		<Container>
 			<Row className="g-4">
-				{news.map((item, idx) => {
+				{currentTickerData.topNews.map((item, idx) => {
 					return (
 						<Col xl={6} key={idx}>
 							<NewsArticle article={item} />

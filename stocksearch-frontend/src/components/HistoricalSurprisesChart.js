@@ -1,62 +1,17 @@
 import { useState, useEffect } from "react";
 import HighCharts from "highcharts/highstock";
 import HighchartsReact from "highcharts-react-official";
-import axios from "axios";
+import { useTickerContext } from "../context/TickerContext";
 
 const HistoricalSurprisesChart = ({ ticker }) => {
-	const [loading, setLoading] = useState(false);
 	const [chartOptions, setChartOptions] = useState(null);
-
-	const fetchColumnChartData = async () => {
-		try {
-			const response = await axios.get(`/stock/earnings/${ticker}`);
-			const data = await response.data;
-
-			let series1_data = [];
-			let series2_data = [];
-
-			data.forEach((item) => {
-				const date = new Date(item.period);
-				const timestamp = date.getTime();
-
-				series1_data.push([timestamp, item.estimate]);
-				series2_data.push([timestamp, item.surprisePercent]);
-			});
-
-			updateOptions([
-				{
-					name: "Series 1",
-					data: series1_data,
-					marker: {
-						enabled: true,
-						radius: 4,
-					},
-				},
-				{
-					name: "Series 2",
-					data: series2_data,
-					marker: {
-						enabled: true,
-						radius: 4,
-					},
-				},
-			]);
-		} catch (error) {
-			console.log(error);
-		}
-	};
+	const { currentTickerData } = useTickerContext();
 
 	useEffect(() => {
-		setLoading(true);
-		fetchColumnChartData();
-		setLoading(false);
-	}, []);
+		updateOptions(currentTickerData.historicalChartData);
+	}, [currentTickerData.historicalChartData]);
 
-	if (loading) {
-		return <h1>Loading</h1>;
-	}
-
-	const updateOptions = (seriesData) => {
+	const updateOptions = ([series1_data, series2_data]) => {
 		const options = {
 			chart: {
 				type: "spline",
@@ -78,7 +33,24 @@ const HistoricalSurprisesChart = ({ ticker }) => {
 					},
 				},
 			},
-			series: seriesData,
+			series: [
+				{
+					name: "Series 1",
+					data: series1_data,
+					marker: {
+						enabled: true,
+						radius: 4,
+					},
+				},
+				{
+					name: "Series 2",
+					data: series2_data,
+					marker: {
+						enabled: true,
+						radius: 4,
+					},
+				},
+			],
 			title: {
 				text: "Historical EPS Surprises",
 			},
@@ -103,9 +75,7 @@ const HistoricalSurprisesChart = ({ ticker }) => {
 
 	return (
 		<>
-			{loading ? (
-				<h1>Loading</h1>
-			) : chartOptions ? (
+			{chartOptions ? (
 				<HighchartsReact
 					highcharts={HighCharts}
 					constructorType={"stockChart"}

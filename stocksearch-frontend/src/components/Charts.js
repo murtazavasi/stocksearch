@@ -4,17 +4,20 @@ import Highcharts from "highcharts/highstock";
 import HighchartsReact from "highcharts-react-official";
 import Indicators from "highcharts/indicators/indicators";
 import VBP from "highcharts/indicators/volume-by-price";
+import { useTickerContext } from "../context/TickerContext";
 
 // Initialize the indicators
 Indicators(Highcharts);
 VBP(Highcharts);
 
-const Chart = ({ ticker, chartData }) => {
+const Chart = ({ ticker }) => {
 	const [chartOptions, setChartOptions] = useState(null);
+
+	const { currentTickerData } = useTickerContext();
 
 	useEffect(() => {
 		// fetchData();
-		updateOptions(chartData);
+		updateOptions(currentTickerData.chartData);
 	}, [ticker]);
 
 	const updateOptions = (data) => {

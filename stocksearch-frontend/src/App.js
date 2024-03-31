@@ -9,20 +9,23 @@ import HomePage from "./pages/HomePage.js";
 import PortfolioPage from "./pages/PortfolioPage.js";
 import WatchListPage from "./pages/WatchListPage.js";
 import Footer from "./components/Footer.js";
+import { TickerContextProvider } from "./context/TickerContext.js";
 
 const App = () => {
 	return (
 		<div className="App">
-			<Router>
-				<Header />
-				<Routes>
-					<Route path="/" Component={HomePage}></Route>
-					<Route path="/search/:keyword" Component={HomePage}></Route>
-					<Route path="/portfolio" Component={PortfolioPage}></Route>
-					<Route path="/watchlist" Component={WatchListPage}></Route>
-				</Routes>
-				<Footer />
-			</Router>
+			<TickerContextProvider>
+				<Router>
+					<Header />
+					<Routes>
+						<Route path="/" Component={HomePage}></Route>
+						<Route path="/search/:keyword" Component={HomePage}></Route>
+						<Route path="/portfolio" Component={PortfolioPage}></Route>
+						<Route path="/watchlist" Component={WatchListPage}></Route>
+					</Routes>
+					<Footer />
+				</Router>
+			</TickerContextProvider>
 		</div>
 	);
 };
