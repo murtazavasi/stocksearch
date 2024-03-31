@@ -18,7 +18,7 @@ const BuyModal = ({
 			</Modal.Header>
 			<Modal.Body>
 				<p>Current Price: {currentPrice} </p>
-				<p>Money in the wallet: {balance}</p>
+				<p>Money in the wallet: {balance?.toFixed(2)}</p>
 				<Form.Label htmlFor="quantity">Quantity</Form.Label>
 				<Form.Control
 					type="number"
@@ -27,7 +27,7 @@ const BuyModal = ({
 					onChange={(e) => setQuantity(parseInt(e.target.value))}
 				/>
 			</Modal.Body>
-			<Modal.Footer>
+			<Modal.Footer className="justify-content-between">
 				<p>Total: {(currentPrice * quantity).toFixed(2)}</p>
 				<Button
 					variant={btnText === "Buy" ? "success" : "danger"}

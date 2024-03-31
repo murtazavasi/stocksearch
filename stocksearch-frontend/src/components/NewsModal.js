@@ -28,14 +28,16 @@ const NewsModal = ({ show, handleClose, article }) => {
 					For more info click <Link to={article.url}>here</Link>
 				</p>
 			</Modal.Body>
-			<Modal.Footer>
+			<Modal.Footer className="">
 				Share
-				<Button variant="secondary" onClick={handleTweet}>
-					<i className="bi bi-twitter-x"></i>
-				</Button>
-				<Button variant="primary" onClick={handlePost}>
-					<i className="bi bi-facebook"></i>
-				</Button>
+				<div>
+					<Button variant="secondary" onClick={handleTweet} className="me-2">
+						<i className="bi bi-twitter-x"></i>
+					</Button>
+					<Button variant="primary" onClick={handlePost}>
+						<i className="bi bi-facebook"></i>
+					</Button>
+				</div>
 			</Modal.Footer>
 		</Modal>
 	);

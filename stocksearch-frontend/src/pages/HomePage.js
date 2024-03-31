@@ -11,6 +11,7 @@ import Loader from "../components/utils/Loader";
 
 const HomePage = () => {
 	const { keyword: searchTicker } = useParams();
+
 	const [ticker, setTicker] = useState(searchTicker || "");
 	const [companyDescription, setCompanyDescription] = useState({});
 	const [stockQuote, setStockQuote] = useState({});
@@ -136,6 +137,34 @@ const HomePage = () => {
 			fetchData();
 		}
 	}, [searchTicker]);
+
+	useEffect(() => {
+		const updateData = async () => {
+			console.log("interval executed");
+			// TODO: This ticker is coming undefined or empty. Why?
+			console.log(ticker);
+			console.log(determineMarketStatus());
+			if (searchTicker && determineMarketStatus()) {
+				setLoading(true);
+				try {
+					await Promise.all([
+						fetchCompanyDescription(searchTicker),
+						fetchStockQuote(searchTicker),
+						fetchHourlyChartData(searchTicker),
+						fetchPeerData(searchTicker),
+					]);
+				} catch (error) {
+					setLoading(false);
+					console.log(error);
+				}
+				setLoading(false);
+			}
+		};
+		let intervalId = setInterval(updateData, 15000);
+		return () => {
+			clearInterval(intervalId);
+		};
+	}, []);
 
 	return (
 		<Container>
